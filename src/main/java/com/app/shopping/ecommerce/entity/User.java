@@ -1,4 +1,4 @@
-package com.app.shopping.ecommerce.Model;
+package com.app.shopping.ecommerce.entity;
 
 import jakarta.persistence.Entity;
 import lombok.Data;
