@@ -4,6 +4,7 @@ import com.app.shopping.ecommerce.security.JwtAuthenticationEntryPoint;
 import com.app.shopping.ecommerce.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -41,6 +42,7 @@ public class SecurityConfig {
                 (csrf) -> csrf.disable()).authorizeHttpRequests(
                         (authorize) -> authorize
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/categories/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
