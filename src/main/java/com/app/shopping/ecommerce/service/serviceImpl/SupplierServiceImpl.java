@@ -1,11 +1,15 @@
 package com.app.shopping.ecommerce.service.serviceImpl;
 
 import com.app.shopping.ecommerce.entity.Supplier;
+import com.app.shopping.ecommerce.entity.User;
 import com.app.shopping.ecommerce.payload.SupplierDto;
 import com.app.shopping.ecommerce.payload.SupplierReg;
 import com.app.shopping.ecommerce.repository.SupplierRepository;
+import com.app.shopping.ecommerce.repository.UserRepository;
 import com.app.shopping.ecommerce.service.SupplierService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,18 +18,25 @@ import java.util.Optional;
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
+    Logger logger= LoggerFactory.getLogger(SupplierServiceImpl.class);
     private final SupplierRepository supplierRepository;
+    private UserRepository userRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public SupplierServiceImpl(SupplierRepository supplierRepository, ModelMapper modelMapper) {
+    public SupplierServiceImpl(SupplierRepository supplierRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.supplierRepository = supplierRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public SupplierReg RegistrationSupplier(SupplierReg supplierreg) {
         Supplier supplier = modelMapper.map(supplierreg, Supplier.class);
+//        logger.info(supplier.getSupplierName()+" "+supplierreg.getCompany());
+        User user=new User();
+        user.setEmail(supplierreg.getEmail());
+//        user.setName(supplierreg.getCompanyName());
         return modelMapper.map(supplierRepository.save(supplier), SupplierReg.class);
     }
 

@@ -16,7 +16,7 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
-    private String companyname;
+    private String company;
     private double profitSharingPercentage;
     private String contactNumber;
     private String addressLine1;
@@ -24,7 +24,7 @@ public class Supplier {
     private String addressLine3;  // Landmark
     private String city;
     private String postalCode;
-    private String suppliername;
+    private String supplierName;
     private String designation;
     private String accountHolder;
     private String accountNumber;

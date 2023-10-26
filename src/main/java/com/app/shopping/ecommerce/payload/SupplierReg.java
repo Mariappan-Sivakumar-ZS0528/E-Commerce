@@ -12,7 +12,7 @@ import lombok.Setter;
 public class SupplierReg {
     private Long id;
     private String email;
-    private String companyname;
+    private String company;
     private double profitSharingPercentage;
     private String contactNumber;
     private String addressLine1;
