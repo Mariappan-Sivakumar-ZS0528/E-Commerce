@@ -44,11 +44,14 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/categories/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/file/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/supplier/**").permitAll()
+
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 ).sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

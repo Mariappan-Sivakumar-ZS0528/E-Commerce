@@ -18,6 +18,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping
 public class ECommerceApplication {
+
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
