@@ -12,7 +12,7 @@ import lombok.Setter;
 public class SupplierDto {
     private Long id;
     private String email;
-    private String companyname;
+    private String company;
     private double profitSharingPercentage;
     private String contactNumber;
     private String addressLine1;
@@ -20,7 +20,7 @@ public class SupplierDto {
     private String addressLine3;
     private String city;
     private String postalCode;
-    private String suppliername;
+    private String supplierName;
     private String designation;
     private String accountHolder;
     private String accountNumber;
