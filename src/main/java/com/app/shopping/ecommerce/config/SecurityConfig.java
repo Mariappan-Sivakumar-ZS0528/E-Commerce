@@ -43,6 +43,7 @@ public class SecurityConfig {
                         (authorize) -> authorize
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/categories/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/file/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/supplier/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/faq/**").permitAll()
                                 .anyRequest().authenticated())

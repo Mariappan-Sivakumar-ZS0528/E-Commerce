@@ -1,7 +1,9 @@
 package com.app.shopping.ecommerce.services;
 
 import com.app.shopping.ecommerce.payload.CategoryDto;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CategoryService {
@@ -10,5 +12,9 @@ public interface CategoryService {
     CategoryDto getCategory(Long id);
     List<CategoryDto> getAllCategories();
     void deleteCategory(Long id);
+    String updateCategoryImage(MultipartFile mobileImage, MultipartFile desktopImage,MultipartFile thumbnailImage, Long categoryId) throws IOException;
+    byte[] downloadMobileImage(Long id,String mobileImageName);
+    byte[] downloadDesktopImage(Long id,String desktopImageName);
+    byte[] downloadThumbnailImage(Long id,String thumbnailImageName);
 
 }

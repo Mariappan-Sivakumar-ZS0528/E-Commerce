@@ -1,4 +1,4 @@
-package com.app.shopping.ecommerce.service;
+package com.app.shopping.ecommerce.services;
 
 import com.app.shopping.ecommerce.entity.Supplier;
 import com.app.shopping.ecommerce.payload.SupplierDto;
