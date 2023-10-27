@@ -63,6 +63,9 @@ public class CategoryServiceImpl implements CategoryService {
         category.setMobileImageName(mobileImage.getOriginalFilename());
         category.setDesktopImageName(desktopImage.getOriginalFilename());
         category.setThumbnailImageName(thumbnailImage.getOriginalFilename());
+        category.setMobileImageType(mobileImage.getContentType());
+        category.setDesktopImageType(desktopImage.getContentType());
+        category.setThumbnailImageType(thumbnailImage.getContentType());
         category.setMobileImageData(ImageUtils.compressImage(mobileImage.getBytes()));
         category.setDesktopImageData(ImageUtils.compressImage(desktopImage.getBytes()));
         category.setThumbnailImageData(ImageUtils.compressImage(thumbnailImage.getBytes()));
@@ -71,16 +74,32 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public byte[] downloadMobileImage(String mobileImageName) {
-        return new byte[0];
+    public byte[] downloadMobileImage(Long id, String mobileImageName) {
+        Category category = categoryRepository.findById(id).orElseThrow();
+        if (category.getMobileImageName().equals(mobileImageName)) {
+            return ImageUtils.decompressImage(category.getMobileImageData());
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public byte[] downloadDesktopImage(String desktopImageName) {
-        return new byte[0];
+    public byte[] downloadDesktopImage(Long id,String desktopImageName) {
+        Category category=categoryRepository.findById(id).orElseThrow();
+        if (category.getDesktopImageName().equals(desktopImageName)) {
+            return ImageUtils.decompressImage(category.getDesktopImageData());
+        } else {
+            return null;
+        }
     }
     @Override
-    public byte[] downloadThumbnailImage(String thumbnailImageName) {
-        return new byte[0];
+    public byte[] downloadThumbnailImage(Long id,String thumbnailImageName) {
+        Category category=categoryRepository.findById(id).orElseThrow();
+        if (category.getThumbnailImageName().equals(thumbnailImageName)) {
+            return ImageUtils.decompressImage(category.getThumbnailImageData());
+        } else {
+            return null;
+        }
     }
+
 }
