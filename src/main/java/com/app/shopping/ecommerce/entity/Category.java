@@ -24,11 +24,13 @@ public class Category {
     private String description;
     private String mobileImageName;
     private String desktopImageName;
+    private String thumbnailImageName;
     private String imageType;
     @Lob
     private byte[] mobileImageData;
     @Lob
     private byte[] desktopImageData;
+    private byte[] thumbnailImageData;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubCategory> subCategories;
 }

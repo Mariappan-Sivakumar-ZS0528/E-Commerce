@@ -16,4 +16,7 @@ public class CategoryDto {
     private String name;
     private String description;
     private List<SubCategoryDto> subCategories;
+    private String mobileImageName;
+    private String desktopImageName;
+    private String thumbnailImageName;
 }
