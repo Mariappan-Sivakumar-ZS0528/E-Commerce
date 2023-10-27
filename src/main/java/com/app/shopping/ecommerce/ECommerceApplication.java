@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping
 public class ECommerceApplication {
+
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
