@@ -2,7 +2,6 @@ package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Category;
 import com.app.shopping.ecommerce.payload.CategoryDto;
-import com.app.shopping.ecommerce.payload.CategoryImageDto;
 import com.app.shopping.ecommerce.repository.CategoryRepository;
 import com.app.shopping.ecommerce.services.CategoryService;
 import com.app.shopping.ecommerce.util.ImageUtils;

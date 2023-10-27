@@ -1,7 +1,6 @@
 package com.app.shopping.ecommerce.services;
 
 import com.app.shopping.ecommerce.payload.CategoryDto;
-import com.app.shopping.ecommerce.payload.CategoryImageDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
