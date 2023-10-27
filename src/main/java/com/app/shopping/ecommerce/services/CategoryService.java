@@ -13,8 +13,8 @@ public interface CategoryService {
     List<CategoryDto> getAllCategories();
     void deleteCategory(Long id);
     String updateCategoryImage(MultipartFile mobileImage, MultipartFile desktopImage,MultipartFile thumbnailImage, Long categoryId) throws IOException;
-    byte[] downloadMobileImage(String mobileImageName);
-    byte[] downloadDesktopImage(String desktopImageName);
-    byte[] downloadThumbnailImage(String thumbnailImageName);
+    byte[] downloadMobileImage(Long id,String mobileImageName);
+    byte[] downloadDesktopImage(Long id,String desktopImageName);
+    byte[] downloadThumbnailImage(Long id,String thumbnailImageName);
 
 }
