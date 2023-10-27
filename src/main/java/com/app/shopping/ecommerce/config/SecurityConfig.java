@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/categories/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/supplier/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/faq/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
