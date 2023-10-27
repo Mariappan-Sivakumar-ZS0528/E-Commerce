@@ -1,4 +1,4 @@
-package com.app.shopping.ecommerce.service.serviceImpl;
+package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Supplier;
 import com.app.shopping.ecommerce.entity.User;
@@ -6,7 +6,7 @@ import com.app.shopping.ecommerce.payload.SupplierDto;
 import com.app.shopping.ecommerce.payload.SupplierReg;
 import com.app.shopping.ecommerce.repository.SupplierRepository;
 import com.app.shopping.ecommerce.repository.UserRepository;
-import com.app.shopping.ecommerce.service.SupplierService;
+import com.app.shopping.ecommerce.services.SupplierService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

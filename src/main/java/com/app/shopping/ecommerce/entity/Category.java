@@ -22,6 +22,13 @@ public class Category {
     private String name;
     @Column(nullable = false)
     private String description;
+    private String mobileImageName;
+    private String desktopImageName;
+    private String imageType;
+    @Lob
+    private byte[] mobileImageData;
+    @Lob
+    private byte[] desktopImageData;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubCategory> subCategories;
 }

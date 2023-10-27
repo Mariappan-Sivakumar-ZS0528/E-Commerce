@@ -2,7 +2,7 @@ package com.app.shopping.ecommerce.controller;
 
 import com.app.shopping.ecommerce.payload.SupplierDto;
 import com.app.shopping.ecommerce.payload.SupplierReg;
-import com.app.shopping.ecommerce.service.SupplierService;
+import com.app.shopping.ecommerce.services.SupplierService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
