@@ -4,9 +4,12 @@ import com.app.shopping.ecommerce.entity.Category;
 import com.app.shopping.ecommerce.payload.CategoryDto;
 import com.app.shopping.ecommerce.repository.CategoryRepository;
 import com.app.shopping.ecommerce.services.CategoryService;
+import com.app.shopping.ecommerce.util.ImageUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -50,5 +53,34 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Long id) {
         Category category=categoryRepository.findById(id).orElseThrow();
         categoryRepository.delete(category);
+    }
+
+
+
+    @Override
+    public String updateCategoryImage(MultipartFile mobileImage, MultipartFile desktopImage,MultipartFile thumbnailImage, Long categoryId) throws IOException {
+        Category category=categoryRepository.findById(categoryId).orElseThrow();
+        category.setMobileImageName(mobileImage.getOriginalFilename());
+        category.setDesktopImageName(desktopImage.getOriginalFilename());
+        category.setThumbnailImageName(thumbnailImage.getOriginalFilename());
+        category.setMobileImageData(ImageUtils.compressImage(mobileImage.getBytes()));
+        category.setDesktopImageData(ImageUtils.compressImage(desktopImage.getBytes()));
+        category.setThumbnailImageData(ImageUtils.compressImage(thumbnailImage.getBytes()));
+        categoryRepository.save(category);
+        return "Category image updated successfully";
+    }
+
+    @Override
+    public byte[] downloadMobileImage(String mobileImageName) {
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] downloadDesktopImage(String desktopImageName) {
+        return new byte[0];
+    }
+    @Override
+    public byte[] downloadThumbnailImage(String thumbnailImageName) {
+        return new byte[0];
     }
 }
