@@ -3,6 +3,7 @@ package com.app.shopping.ecommerce.services.impl;
 import com.app.shopping.ecommerce.entity.Category;
 import com.app.shopping.ecommerce.entity.SubCategory;
 import com.app.shopping.ecommerce.exception.ECommerceApiException;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.SubCategoryDto;
 import com.app.shopping.ecommerce.repository.CategoryRepository;
 import com.app.shopping.ecommerce.repository.SubCategoryRepository;
@@ -26,7 +27,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Override
     public SubCategoryDto createSubCategory(long categoryId, SubCategoryDto subCategoryDto) {
         SubCategory subCategory=modelMapper.map(subCategoryDto, SubCategory.class);
-        Category category= categoryRepository.findById(categoryId).orElseThrow();
+        Category category= categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","id",categoryId));
         subCategory.setCategory(category);
         SubCategory savedSubCategory=subCategoryRepository.save(subCategory);
         return modelMapper.map(savedSubCategory, SubCategoryDto.class);
@@ -34,8 +35,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public SubCategoryDto updateSubCategory(long categoryId, SubCategoryDto subCategoryDto, Long id) {
-        SubCategory subCategory=subCategoryRepository.findById(id).orElseThrow();
-        Category category=categoryRepository.findById(categoryId).orElseThrow();
+        SubCategory subCategory=subCategoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("SubCategory","id",id));
+        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","id",categoryId));
         if (!category.getId().equals(subCategory.getCategory().getId())){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"SubCategory is not belong to this category");
         }
@@ -47,8 +48,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public SubCategoryDto getSubCategoryById(long categoryId, Long subCategoryId) {
-        Category category=categoryRepository.findById(categoryId).orElseThrow();
-        SubCategory subCategory=subCategoryRepository.findById(subCategoryId).orElseThrow();
+        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","id",categoryId));
+        SubCategory subCategory=subCategoryRepository.findById(subCategoryId).orElseThrow(()->new ResourceNotFoundException("SubCategory","id",subCategoryId));
         if (!category.getId().equals(subCategory.getCategory().getId())){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"SubCategory is not belong to this category");
         }
@@ -57,8 +58,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public void deleteSubCategory(long categoryId, Long subCategoryId) {
-        Category category=categoryRepository.findById(categoryId).orElseThrow();
-        SubCategory subCategory=subCategoryRepository.findById(subCategoryId).orElseThrow();
+        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","id",categoryId));
+        SubCategory subCategory=subCategoryRepository.findById(subCategoryId).orElseThrow(()->new ResourceNotFoundException("SubCategory","id",subCategoryId));
         if (!category.getId().equals(subCategory.getCategory().getId())){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"SubCategory is not belong to this category");
         }

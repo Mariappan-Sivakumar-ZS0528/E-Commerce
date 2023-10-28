@@ -1,6 +1,7 @@
 package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Banner;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.BannerLinkDto;
 import com.app.shopping.ecommerce.repository.BannerRepository;
 import com.app.shopping.ecommerce.services.BannerService;
@@ -45,7 +46,7 @@ public class BannerServiceimpl implements BannerService {
     }
 
     public byte[] downloadDesktopImage(Long id,String desktopImageName) {
-        Banner banner = storageRepository.findById(id).orElse(null);
+        Banner banner = storageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Banner", "id", id));
         if (banner != null&& Objects.equals(banner.getDesktopImageName(), desktopImageName)) {
             return ImageUtils.decompressImage(banner.getDesktopImageData());
         }
@@ -57,8 +58,8 @@ public class BannerServiceimpl implements BannerService {
     }
 
     public byte[] downloadMobileImage(Long id,String mobileImageName) {
-        Banner banner = storageRepository.findById(id).orElse(null);
-        if (banner != null&& Objects.equals(banner.getMobileImageName(), mobileImageName))
+        Banner banner = storageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Banner", "id", id));
+        if (banner.getMobileImageName().equals(mobileImageName))
         {
             return ImageUtils.decompressImage(banner.getMobileImageData());
         }
@@ -77,18 +78,17 @@ public class BannerServiceimpl implements BannerService {
 
     @Override
     public String updateBannerImages(Long id, MultipartFile mobileImage, MultipartFile desktopImage) throws IOException {
-        Banner banner = storageRepository.findById(id).orElse(null);
-        if (banner != null) {
-            banner.setMobileImageName(mobileImage.getOriginalFilename());
-            banner.setImageType(mobileImage.getContentType());
-            banner.setMobileImageData(ImageUtils.compressImage(mobileImage.getBytes()));
-            banner.setDesktopImageName(desktopImage.getOriginalFilename());
-            banner.setImageType(desktopImage.getContentType());
-            banner.setDesktopImageData(ImageUtils.compressImage(desktopImage.getBytes()));
-            storageRepository.save(banner);
-            return "mobile image uploaded successfully: " + mobileImage.getOriginalFilename() +"/n"+ " desktop image uploaded successfully: " + desktopImage.getOriginalFilename();
-        }
-        return null;
+        Banner banner = storageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Banner", "id", id));
+
+        banner.setMobileImageName(mobileImage.getOriginalFilename());
+        banner.setImageType(mobileImage.getContentType());
+        banner.setMobileImageData(ImageUtils.compressImage(mobileImage.getBytes()));
+        banner.setDesktopImageName(desktopImage.getOriginalFilename());
+        banner.setImageType(desktopImage.getContentType());
+        banner.setDesktopImageData(ImageUtils.compressImage(desktopImage.getBytes()));
+        storageRepository.save(banner);
+        return "mobile image uploaded successfully: " + mobileImage.getOriginalFilename() + "/n" + " desktop image uploaded successfully: " + desktopImage.getOriginalFilename();
+
     }
 
 }

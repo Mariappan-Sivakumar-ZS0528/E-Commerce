@@ -1,6 +1,7 @@
 package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Legal;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.LegalDto;
 import com.app.shopping.ecommerce.repository.LegalRepository;
 import com.app.shopping.ecommerce.services.LegalService;
@@ -40,7 +41,7 @@ public class LegalServiceImpl implements LegalService {
 
     @Override
     public LegalDto getLegalById(Long id) {
-        Legal legal = legalRepository.findById(id).orElse(null);
+        Legal legal = legalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Legal", "id", id));
         return modelMapper.map(legal, LegalDto.class);
     }
 
@@ -58,7 +59,7 @@ public class LegalServiceImpl implements LegalService {
             return modelMapper.map(legalRepository.save(legal), LegalDto.class);
         }
         else {
-            return null;
+            throw new ResourceNotFoundException("Legal", "id", id);
         }
     }
 
