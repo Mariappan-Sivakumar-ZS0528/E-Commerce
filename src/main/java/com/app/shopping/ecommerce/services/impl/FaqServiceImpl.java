@@ -1,9 +1,9 @@
-package com.app.shopping.ecommerce.service.serviceImpl;
+package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Faq;
 import com.app.shopping.ecommerce.payload.FaqDto;
 import com.app.shopping.ecommerce.repository.FaqRepository;
-import com.app.shopping.ecommerce.service.FaqService;
+import com.app.shopping.ecommerce.services.FaqService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,7 @@
 package com.app.shopping.ecommerce.controller;
 
-import com.app.shopping.ecommerce.entity.Faq;
 import com.app.shopping.ecommerce.payload.FaqDto;
-import com.app.shopping.ecommerce.payload.SupplierDto;
-import com.app.shopping.ecommerce.payload.SupplierReg;
-import com.app.shopping.ecommerce.service.FaqService;
-import org.springframework.http.HttpStatus;
+import com.app.shopping.ecommerce.services.FaqService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
