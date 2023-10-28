@@ -1,6 +1,7 @@
 package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Category;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.CategoryDto;
 import com.app.shopping.ecommerce.repository.CategoryRepository;
 import com.app.shopping.ecommerce.services.CategoryService;
@@ -30,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId) {
-        Category category=categoryRepository.findById(categoryId).orElseThrow();
+        Category category=categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
         category.setName(categoryDto.getName());
         category.setDescription(categoryDto.getDescription());
         Category updatedCategory=categoryRepository.save(category);
@@ -39,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategory(Long id) {
-        Category category=categoryRepository.findById(id).orElseThrow();
+        Category category=categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
         return modelMapper.map(category, CategoryDto.class);
     }
 
@@ -51,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-        Category category=categoryRepository.findById(id).orElseThrow();
+        Category category=categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
         categoryRepository.delete(category);
     }
 
@@ -59,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String updateCategoryImage(MultipartFile mobileImage, MultipartFile desktopImage,MultipartFile thumbnailImage, Long categoryId) throws IOException {
-        Category category=categoryRepository.findById(categoryId).orElseThrow();
+        Category category=categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
         category.setMobileImageName(mobileImage.getOriginalFilename());
         category.setDesktopImageName(desktopImage.getOriginalFilename());
         category.setThumbnailImageName(thumbnailImage.getOriginalFilename());
@@ -75,7 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public byte[] downloadMobileImage(Long id, String mobileImageName) {
-        Category category = categoryRepository.findById(id).orElseThrow();
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
         if (category.getMobileImageName().equals(mobileImageName)) {
             return ImageUtils.decompressImage(category.getMobileImageData());
         } else {
@@ -85,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public byte[] downloadDesktopImage(Long id,String desktopImageName) {
-        Category category=categoryRepository.findById(id).orElseThrow();
+        Category category=categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
         if (category.getDesktopImageName().equals(desktopImageName)) {
             return ImageUtils.decompressImage(category.getDesktopImageData());
         } else {
@@ -94,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @Override
     public byte[] downloadThumbnailImage(Long id,String thumbnailImageName) {
-        Category category=categoryRepository.findById(id).orElseThrow();
+        Category category=categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
         if (category.getThumbnailImageName().equals(thumbnailImageName)) {
             return ImageUtils.decompressImage(category.getThumbnailImageData());
         } else {
