@@ -90,5 +90,4 @@ public class BannerServiceimpl implements BannerService {
         return "mobile image uploaded successfully: " + mobileImage.getOriginalFilename() + "/n" + " desktop image uploaded successfully: " + desktopImage.getOriginalFilename();
 
     }
-
 }
