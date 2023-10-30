@@ -24,4 +24,15 @@ public class FullwidthDisplayFeaturedPromos {
         @Temporal(TemporalType.DATE)
         private Date endingDate;
         private String link;
+        @Lob
+        @Column(length = 1000)
+        private byte[] desktopImage;
+        private int desktopwidth;
+        private int desktopheight;
+        private boolean status=true;
+        @Lob
+        @Column(length = 1000)
+        private byte[] mobileImage;
+        private int mobilewidth;
+        private int mobileheight;
 }
