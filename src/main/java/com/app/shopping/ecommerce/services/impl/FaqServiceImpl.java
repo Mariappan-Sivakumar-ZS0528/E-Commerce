@@ -1,9 +1,10 @@
-package com.app.shopping.ecommerce.service.serviceImpl;
+package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Faq;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.FaqDto;
 import com.app.shopping.ecommerce.repository.FaqRepository;
-import com.app.shopping.ecommerce.service.FaqService;
+import com.app.shopping.ecommerce.services.FaqService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class FaqServiceImpl implements FaqService {
 
     @Override
     public FaqDto getFaqById(Long id) {
-        Faq faq = faqRepository.findById(id).orElse(null);
+        Faq faq = faqRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Faq", "id", id));
         return modelMapper.map(faq, FaqDto.class);
     }
 
@@ -48,7 +49,7 @@ public class FaqServiceImpl implements FaqService {
             return modelMapper.map(faqRepository.save(faq), FaqDto.class);
         }
         else {
-            return null;
+            throw new ResourceNotFoundException("Faq", "id", id);
         }
     }
 

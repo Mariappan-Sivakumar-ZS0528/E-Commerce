@@ -2,6 +2,7 @@ package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Supplier;
 import com.app.shopping.ecommerce.entity.User;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.SupplierDto;
 import com.app.shopping.ecommerce.payload.SupplierReg;
 import com.app.shopping.ecommerce.repository.SupplierRepository;
@@ -42,7 +43,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public SupplierDto getSupplierById(Long id) {
-        Supplier supplier = supplierRepository.findById(id).orElse(null);
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
         return modelMapper.map(supplier, SupplierDto.class);
     }
     @Override
@@ -59,7 +60,7 @@ public class SupplierServiceImpl implements SupplierService {
             Supplier supplier = modelMapper.map(updatedSupplier, Supplier.class);
             return modelMapper.map(supplierRepository.save(supplier), SupplierDto.class);
         } else {
-            return null;
+            throw new ResourceNotFoundException("Supplier", "id", id);
         }
     }
 
@@ -69,7 +70,7 @@ public class SupplierServiceImpl implements SupplierService {
             supplierRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw new ResourceNotFoundException("Supplier", "id", id);
         }
     }
 }
