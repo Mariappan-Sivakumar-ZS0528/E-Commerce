@@ -90,5 +90,4 @@ public class BannerServiceimpl implements BannerService {
         }
         return null;
     }
-
 }
