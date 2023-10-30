@@ -2,6 +2,8 @@ package com.app.shopping.ecommerce.config;
 
 import com.app.shopping.ecommerce.security.JwtAuthenticationEntryPoint;
 import com.app.shopping.ecommerce.security.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
+@SecurityScheme(
+    name = "bearerAuth",
+    type = SecuritySchemeType.HTTP,
+    bearerFormat = "JWT",
+    scheme = "bearer"
+)
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
@@ -47,6 +55,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"api/supplier/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/faq/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/legal/**").permitAll()
+                                .requestMatchers("swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
