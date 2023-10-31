@@ -1,11 +1,14 @@
 package com.app.shopping.ecommerce.controller;
 
+import com.app.shopping.ecommerce.payload.ShowDetailsDto;
 import com.app.shopping.ecommerce.payload.SupplierDto;
 import com.app.shopping.ecommerce.payload.SupplierReg;
+import com.app.shopping.ecommerce.services.ShowDetailsService;
 import com.app.shopping.ecommerce.services.SupplierService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,9 +21,11 @@ import java.util.List;
 @Tag(name = "Supplier Controller", description = "Crud operation related to supplier")
 public class SupplierController {
     private SupplierService supplierService;
+    private ShowDetailsService showDetailsService;
 
-    public SupplierController(SupplierService supplierService) {
+    public SupplierController(SupplierService supplierService, ShowDetailsService showDetailsService) {
         this.supplierService = supplierService;
+        this.showDetailsService = showDetailsService;
     }
 
     @Operation(summary = "Add new supplier")
@@ -55,4 +60,12 @@ public class SupplierController {
     public ResponseEntity<Boolean> deleteSupplier(@PathVariable Long id) {
         return ResponseEntity.ok(supplierService.deleteSupplier(id));
     }
+    @GetMapping("getDetail")
+    @Operation(summary = "Get supplier details")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_MERCHANT')")
+    public ResponseEntity<ShowDetailsDto> getSupplierDetails(HttpServletRequest request) {
+        return ResponseEntity.ok(showDetailsService.getShowDetails(request));
+    }
+
 }
