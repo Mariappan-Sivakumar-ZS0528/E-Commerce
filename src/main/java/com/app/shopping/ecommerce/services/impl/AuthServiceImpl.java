@@ -1,11 +1,15 @@
 package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.Role;
+import com.app.shopping.ecommerce.entity.Supplier;
 import com.app.shopping.ecommerce.entity.User;
 import com.app.shopping.ecommerce.exception.ECommerceApiException;
+import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.AdminRegistrationDto;
 import com.app.shopping.ecommerce.payload.LoginDto;
+import com.app.shopping.ecommerce.payload.SupplierPassword;
 import com.app.shopping.ecommerce.repository.RoleRepository;
+import com.app.shopping.ecommerce.repository.SupplierRepository;
 import com.app.shopping.ecommerce.repository.UserRepository;
 import com.app.shopping.ecommerce.security.JwtTokenProvider;
 import com.app.shopping.ecommerce.services.AuthService;
@@ -15,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,13 +34,17 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private ModelMapper modelMapper;
+    private SupplierRepository supplierRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, SupplierRepository supplierRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
+        this.supplierRepository = supplierRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -78,5 +87,27 @@ public class AuthServiceImpl implements AuthService {
         roles.add(roleRepository.findByName("ROLE_ADMIN").get());
         List<User> users=userRepository.findAll().stream().filter(user -> user.getRoles().contains(roles.get(0)) || user.getRoles().contains(roles.get(1)) || user.getRoles().contains(roles.get(2))).toList();
         return users.stream().map(user -> modelMapper.map(user, AdminRegistrationDto.class)).toList();
+    }
+
+    public String updateSupplierPassword(Long id, SupplierPassword supplierPassword) {
+        if (! (supplierPassword.getPassword().equals(supplierPassword.getConfirmPassword())&& supplierPassword.getPassword().length()>8)){
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Password does not match");
+        }
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
+        if (supplier.getEmail().equals(supplierPassword.getEmail())){
+            User user=new User();
+            user.setEmail(supplier.getEmail());
+            user.setContact(supplier.getContactNumber());
+            user.setName(supplier.getCompany());
+            Set<Role> roles=new HashSet<>();
+            roles.add(roleRepository.findByName("ROLE_MERCHANT").get());
+            user.setRoles(roles);
+            user.setPassword(passwordEncoder.encode(supplierPassword.getPassword()));
+            userRepository.save(user);
+            return "Password updated successfully";
+        }
+        else {
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Email does not match");
+        }
     }
 }
