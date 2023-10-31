@@ -3,6 +3,7 @@ package com.app.shopping.ecommerce.controller;
 import com.app.shopping.ecommerce.payload.AdminRegistrationDto;
 import com.app.shopping.ecommerce.payload.JWTAuthResponse;
 import com.app.shopping.ecommerce.payload.LoginDto;
+import com.app.shopping.ecommerce.payload.SupplierPassword;
 import com.app.shopping.ecommerce.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,5 +43,11 @@ public class AuthController {
     @GetMapping("/admin/all")
     public ResponseEntity<List<AdminRegistrationDto>> getAllAdmins(){
         return ResponseEntity.ok(authService.getAllAdmins());
+    }
+
+    @Operation(summary = "Update Supplier Password", description = "Update Supplier Password")
+    @PutMapping("/supplier/{id}")
+    public ResponseEntity<String> updateSupplierPassword(@PathVariable Long id, @RequestBody SupplierPassword supplierPassword){
+        return ResponseEntity.ok(authService.updateSupplierPassword(id, supplierPassword));
     }
 }

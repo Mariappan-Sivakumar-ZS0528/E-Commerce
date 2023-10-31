@@ -1,10 +1,13 @@
 package com.app.shopping.ecommerce.services.impl;
 
+import com.app.shopping.ecommerce.entity.Role;
 import com.app.shopping.ecommerce.entity.Supplier;
 import com.app.shopping.ecommerce.entity.User;
 import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
 import com.app.shopping.ecommerce.payload.SupplierDto;
+import com.app.shopping.ecommerce.payload.SupplierPassword;
 import com.app.shopping.ecommerce.payload.SupplierReg;
+import com.app.shopping.ecommerce.repository.RoleRepository;
 import com.app.shopping.ecommerce.repository.SupplierRepository;
 import com.app.shopping.ecommerce.repository.UserRepository;
 import com.app.shopping.ecommerce.services.SupplierService;
@@ -13,8 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
@@ -23,21 +29,19 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
     private UserRepository userRepository;
     private ModelMapper modelMapper;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public SupplierServiceImpl(SupplierRepository supplierRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public SupplierServiceImpl(SupplierRepository supplierRepository, UserRepository userRepository, ModelMapper modelMapper, RoleRepository roleRepository) {
         this.supplierRepository = supplierRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public SupplierReg RegistrationSupplier(SupplierReg supplierreg) {
         Supplier supplier = modelMapper.map(supplierreg, Supplier.class);
-//        logger.info(supplier.getSupplierName()+" "+supplierreg.getCompany());
-        User user=new User();
-        user.setEmail(supplierreg.getEmail());
-//        user.setName(supplierreg.getCompanyName());
         return modelMapper.map(supplierRepository.save(supplier), SupplierReg.class);
     }
 
