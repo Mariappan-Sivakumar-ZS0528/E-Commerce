@@ -3,10 +3,13 @@ package com.app.shopping.ecommerce.controller;
 import com.app.shopping.ecommerce.payload.ProductDto;
 import com.app.shopping.ecommerce.services.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,34 +22,49 @@ public class ProductController {
     }
     @PostMapping
     @PreAuthorize("hasRole('ROLE_MERCHANT')")
-    public ProductDto createProduct(@RequestBody ProductDto productDto, HttpServletRequest request) {
-        return productService.createProduct(productDto, request);
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto, HttpServletRequest request) {
+        return new ResponseEntity<>(productService.createProduct(productDto, request), HttpStatus.CREATED);
     }
     @GetMapping("/supplier/{supplierId}")
-    public List<ProductDto> getAllProducts(@PathVariable Long supplierId){
-        return productService.getProductsBySupplier(supplierId);
+    public ResponseEntity<List<ProductDto>> getAllProducts(@PathVariable Long supplierId){
+        return ResponseEntity.ok(productService.getProductsBySupplier(supplierId));
     }
     @GetMapping("/supplier/{supplierId}/category/{category}")
-    public List<ProductDto> getByCategoryAndSupplier(@PathVariable Long supplierId, @PathVariable String category){
-        return productService.getByCategoryAndSupplier(supplierId, category);
+    public ResponseEntity<List<ProductDto>> getByCategoryAndSupplier(@PathVariable Long supplierId, @PathVariable String category){
+        return ResponseEntity.ok(productService.getByCategoryAndSupplier(supplierId, category));
     }
     @GetMapping("/supplier/{supplierId}/subcategory/{subCategory}")
-    public List<ProductDto> getBySubCategoryAndSupplier(@PathVariable Long supplierId, @PathVariable String subCategory){
-        return productService.getBySubCategoryAndSupplier(supplierId, subCategory);
+    public ResponseEntity<List<ProductDto>> getBySubCategoryAndSupplier(@PathVariable Long supplierId, @PathVariable String subCategory){
+        return ResponseEntity.ok(productService.getBySubCategoryAndSupplier(supplierId, subCategory));
     }
     @GetMapping("/supplier/{supplierId}/search")
-    public List<ProductDto> searchProductInSupplier(@PathVariable Long supplierId, @RequestParam("query") String query){
-        return productService.searchProductInSupplier(supplierId, query);
+    public ResponseEntity<List<ProductDto>> searchProductInSupplier(@PathVariable Long supplierId, @RequestParam("query") String query){
+        return ResponseEntity.ok(productService.searchProductInSupplier(supplierId, query));
     }
     @PutMapping("/{productId}")
     @PreAuthorize("hasRole('ROLE_MERCHANT')")
-    public ProductDto updateProduct(@PathVariable Long productId, @RequestBody ProductDto productDto, HttpServletRequest request){
-        return productService.updateProduct(productId, productDto, request);
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long productId, @RequestBody ProductDto productDto, HttpServletRequest request){
+        return ResponseEntity.ok(productService.updateProduct(productId, productDto, request));
     }
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasRole('ROLE_MERCHANT')")
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId, HttpServletRequest request){
         productService.deleteProduct(productId, request);
         return ResponseEntity.ok("Product deleted successfully");
+    }
+    @PutMapping("/increaseUnits/{productId}")
+    @PreAuthorize("hasRole('ROLE_MERCHANT')")
+    public ResponseEntity<ProductDto> increaseUnits(@PathVariable Long productId, HttpServletRequest request,@RequestParam("units") int units){
+        return ResponseEntity.ok(productService.increaseUnits(productId, request, units));
+    }
+    @PutMapping("/decreaseUnits/{productId}")
+    @PreAuthorize("hasRole('ROLE_MERCHANT')")
+    public ResponseEntity<ProductDto> decreaseUnits(@PathVariable Long productId, HttpServletRequest request,@RequestParam("units") int units){
+        return ResponseEntity.ok(productService.decreaseUnits(productId, request, units));
+    }
+    @PutMapping("/uploadImage/{productId}")
+    @PreAuthorize("hasRole('ROLE_MERCHANT')")
+    public ResponseEntity<String> uploadImage(@PathVariable Long productId, HttpServletRequest request, @RequestParam("images") MultipartFile... images) throws IOException {
+        return ResponseEntity.ok(productService.uploadImage(productId, request, images));
     }
 }

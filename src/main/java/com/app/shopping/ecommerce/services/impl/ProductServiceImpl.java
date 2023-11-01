@@ -19,7 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -121,5 +123,68 @@ public class ProductServiceImpl implements ProductService {
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be deleted");
         }
         productRepository.delete(product);
+    }
+
+    @Override
+    public ProductDto increaseUnits(Long productId, HttpServletRequest request, int units) {
+        logger.info(productId + " " + units);
+        String email=emailExtractor.getEmailFromRequest(request);
+        logger.info(email);
+        Supplier supplier = supplierRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("Supplier", "email", email));
+        Product product = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product", "id", productId));
+        if (! product.getSupplier().equals(supplier)){
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be accessed");
+        }
+        product.setUnit(product.getUnit()+units);
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductDto.class);
+    }
+
+    @Override
+    public ProductDto decreaseUnits(Long productId, HttpServletRequest request, int units) {
+        String email=emailExtractor.getEmailFromRequest(request);
+        Supplier supplier = supplierRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("Supplier", "email", email));
+        Product product = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product", "id", productId));
+        if (! product.getSupplier().equals(supplier)){
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be accessed");
+        }
+        product.setUnit(product.getUnit()-units);
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductDto.class);
+    }
+
+    @Override
+    public String uploadImage(Long productId, HttpServletRequest request, MultipartFile... images) throws IOException {
+        String email=emailExtractor.getEmailFromRequest(request);
+        Supplier supplier = supplierRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("Supplier", "email", email));
+        Product product = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product", "id", productId));
+        if (! product.getSupplier().equals(supplier)){
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be accessed");
+        }
+        if (images.length>4){
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"You have give more images");
+        }
+        String imagesAdded="Images Added: ";
+        if (images.length>0){
+            product.setImageData1(images[0].getBytes());
+            product.setImageName1(images[0].getOriginalFilename());
+            imagesAdded+=images[0].getOriginalFilename()+", ";
+        }
+        if (images.length>1){
+            product.setImageData2(images[1].getBytes());
+            product.setImageName2(images[1].getOriginalFilename());
+            imagesAdded+=images[1].getOriginalFilename()+", ";
+        }
+        if (images.length>2){
+            product.setImageData3(images[2].getBytes());
+            product.setImageName3(images[2].getOriginalFilename());
+            imagesAdded+=images[2].getOriginalFilename()+", ";
+        }
+        if (images.length>3){
+            product.setImageData4(images[3].getBytes());
+            product.setImageName4(images[3].getOriginalFilename());
+            imagesAdded+=images[3].getOriginalFilename()+", ";
+        }
+        return imagesAdded;
     }
 }
