@@ -18,6 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
+
+import java.util.Collections;
 
 @Configuration
 @EnableMethodSecurity
@@ -38,7 +46,6 @@ public class SecurityConfig {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -51,12 +58,15 @@ public class SecurityConfig {
                         (authorize) -> authorize
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/categories/**").permitAll()
-                                .requestMatchers(HttpMethod.GET,"api/file/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/products/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/supplier/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/faq/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/legal/**").permitAll()
                                 .requestMatchers("swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/DisplayInTiles/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/FullWidthDisplay/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/DisplayInTilesPromos/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/product/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
