@@ -36,4 +36,6 @@ public class Supplier {
     private String bankBranch;
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Product> products;
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Refund> refunds;
 }

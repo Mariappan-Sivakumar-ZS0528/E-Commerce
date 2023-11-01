@@ -14,6 +14,8 @@ import com.app.shopping.ecommerce.repository.UserRepository;
 import com.app.shopping.ecommerce.security.JwtTokenProvider;
 import com.app.shopping.ecommerce.services.AuthService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private ModelMapper modelMapper;
     private SupplierRepository supplierRepository;
     private PasswordEncoder passwordEncoder;
+    Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, SupplierRepository supplierRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
@@ -93,6 +96,7 @@ public class AuthServiceImpl implements AuthService {
         if (! (supplierPassword.getPassword().equals(supplierPassword.getConfirmPassword())&& supplierPassword.getPassword().length()>8)){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Password does not match");
         }
+        logger.info(supplierPassword.getPassword());
         Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
         if (supplier.getEmail().equals(supplierPassword.getEmail())){
             User user=new User();

@@ -59,6 +59,8 @@ public class SecurityConfig {
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/banner/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/report/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/report-details/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/refund/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)

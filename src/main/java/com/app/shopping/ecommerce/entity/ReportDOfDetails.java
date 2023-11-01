@@ -1,9 +1,6 @@
 package com.app.shopping.ecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +14,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "report_d_of_details")
 public class ReportDOfDetails
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String column1;
     private String column2;
     private String column3;

@@ -6,7 +6,9 @@ import com.app.shopping.ecommerce.payload.ReportDOfDetailsDto;
 import com.app.shopping.ecommerce.repository.ReportDOfDetailsRepository;
 import com.app.shopping.ecommerce.services.ReportDOfDetailsService;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReportDOfDetailsServiceImpl implements ReportDOfDetailsService {
 private ReportDOfDetailsRepository reportDOfDetailsRepository;
 private ModelMapper modelMapper;

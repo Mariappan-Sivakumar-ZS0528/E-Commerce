@@ -19,11 +19,12 @@ public class Refund
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-    @OneToMany(mappedBy = "customerName")
     private String orderByName;
     private Long itemCount;
     private String productNameDetails;
     private Date placedOn;
     private String refundAmount;
     private String status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Supplier supplier;
 }

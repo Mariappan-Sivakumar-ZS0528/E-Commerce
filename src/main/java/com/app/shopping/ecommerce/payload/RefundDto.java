@@ -19,5 +19,5 @@ public class RefundDto
     private String productNameDetails;
     private Date placedOn;
     private String refundAmount;
-    private String status;
+    private int status;
 }
