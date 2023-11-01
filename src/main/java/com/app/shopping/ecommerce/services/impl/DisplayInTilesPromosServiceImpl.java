@@ -37,9 +37,6 @@ public class DisplayInTilesPromosServiceImpl implements DisplayInTilesPromosServ
         DisplayInTilesPromos updatedDisplayInTilesPromos=displayInTilesPromosRepository.save(displayInTilesPromos);
         return modelMapper.map(updatedDisplayInTilesPromos,DisplayInTilesPromosDto.class);
     }
-//        FullwidthDisplayFeaturedPromos updatedFullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
-//        return modelMapper.map(updatedFullwidthDisplayFeaturedPromos,FullwidthDisplayFeaturedPromosDto.class);
-//    }
 
     @Override
     public byte[] downloadMobileImage(Long id) {
@@ -78,32 +75,11 @@ public class DisplayInTilesPromosServiceImpl implements DisplayInTilesPromosServ
             return "No record found in the provided id";
         }
     }
-//        FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
-//        if(fullwidthDisplayFeaturedPromos!=null){
-//            ImageMeasurementsDto imageMeasurementsDto=modelMapper.map(fullwidthDisplayFeaturedPromos,ImageMeasurementsDto.class);
-//            if(WhichImageMeasurements.equals("mobile")){
-//                return String.valueOf("("+imageMeasurementsDto.getMobilewidth()+"×"+imageMeasurementsDto.getMobileheight()+")");
-//            }
-//            else if(WhichImageMeasurements.equals("desktop")){
-//                return String.valueOf("("+imageMeasurementsDto.getDesktopwidth()+"×"+imageMeasurementsDto.getDesktopheight()+")");
-//            }
-//            else {
-//                return "There is only mobile and desktop measurements";
-//            }
-//        }
-//        else {
-//            return "No record found in the provided id";
-//        }
-//    }
-
     @Override
     public String deletePromos(Long id) {
         displayInTilesPromosRepository.deleteById(id);
         return "Promo deleted successfully";
     }
-//        fullwidthDisplayFeaturedPromosRepository.deleteById(id);
-//        return "Promo deleted successfully";
-//    }
 
     @Override
     public String disablePromos(Long id) {
@@ -117,16 +93,6 @@ public class DisplayInTilesPromosServiceImpl implements DisplayInTilesPromosServ
             return "No record found in the provided id";
         }
     }
-//        FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
-//        if(fullwidthDisplayFeaturedPromos!=null){
-//            fullwidthDisplayFeaturedPromos.setStatus(false);
-//            fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
-//            return "Promo disabled successfully";
-//        }
-//        else {
-//            return "No record found in the provided id";
-//        }
-//    }
 
     @Override
     public String enablePromos(Long id) {
@@ -140,16 +106,6 @@ public class DisplayInTilesPromosServiceImpl implements DisplayInTilesPromosServ
             return "No record found in the provided id";
         }
     }
-//        FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
-//        if(fullwidthDisplayFeaturedPromos!=null){
-//            fullwidthDisplayFeaturedPromos.setStatus(true);
-//            fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
-//            return "Promo enabled successfully";
-//        }
-//        else {
-//            return "No record found in the provided id";
-//        }
-//    }
 
     @Override
     public DisplayInTilesPromosDto updateWholePromos(Long id, DisplayInTilesPromosDto displayInTilesPromosDto) {
@@ -162,15 +118,7 @@ public class DisplayInTilesPromosServiceImpl implements DisplayInTilesPromosServ
             displayInTilesPromosRepository.save(displayInTilesPromos);
             return modelMapper.map(displayInTilesPromos,DisplayInTilesPromosDto.class);
         }
-//        FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
-//        if(fullwidthDisplayFeaturedPromos!=null){
-//            fullwidthDisplayFeaturedPromos.setPromoTitle(fullwidthDisplayFeaturedPromosDto.getPromoTitle());
-//            fullwidthDisplayFeaturedPromos.setStartingDate(fullwidthDisplayFeaturedPromosDto.getStartingDate());
-//            fullwidthDisplayFeaturedPromos.setEndingDate(fullwidthDisplayFeaturedPromosDto.getEndingDate());
-//            fullwidthDisplayFeaturedPromos.setLink(fullwidthDisplayFeaturedPromosDto.getLink());
-//            fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
-//            return modelMapper.map(fullwidthDisplayFeaturedPromos,FullwidthDisplayFeaturedPromosDto.class);
-//        }
+
         else {
             return null;
         }
@@ -194,24 +142,5 @@ public class DisplayInTilesPromosServiceImpl implements DisplayInTilesPromosServ
             displayInTilesPromosRepository.save(displayInTilesPromos);
             return "Images uploaded successfully";
         }
-//        FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
-//        if(fullwidthDisplayFeaturedPromos==null){
-//            throw new RuntimeException("FullwidthDisplayFeaturedPromos not found");
-//        }
-//        else {
-//            fullwidthDisplayFeaturedPromos.setMobileImage(ImageUtils.compressImage(mobileImage));
-//            ImageDimensions dimensions = ImageDimensionExtractor.getImageDimensions(mobileImage);
-//            fullwidthDisplayFeaturedPromos.setMobilewidth(dimensions.getWidth());
-//            fullwidthDisplayFeaturedPromos.setMobileheight(dimensions.getHeight());
-//            fullwidthDisplayFeaturedPromos.setDesktopImage(ImageUtils.compressImage(desktopImage));
-//            ImageDimensions dimensions1 = ImageDimensionExtractor.getImageDimensions(desktopImage);
-//            fullwidthDisplayFeaturedPromos.setDesktopwidth(dimensions1.getWidth());
-//            fullwidthDisplayFeaturedPromos.setDesktopheight(dimensions1.getHeight());
-//            fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
-//            return "Images uploaded successfully";
-//        }
     }
-//    public List<DisplayInTilesPromos> getbyDate(LocalDate date){
-//
-//    }
 }
