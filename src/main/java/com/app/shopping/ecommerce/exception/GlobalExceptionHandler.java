@@ -51,5 +51,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorDetails> handleAccessDeniedException(AccessDeniedException ex,WebRequest webRequest){
         return new ResponseEntity<>(new ErrorDetails(new Date(), ex.getMessage(), webRequest.getDescription(false)), HttpStatus.UNAUTHORIZED);
     }
-
 }

@@ -24,4 +24,6 @@ public class ReportTitle
     private String title;
     @OneToMany(mappedBy = "reportTitle",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<ReportDetails> reportDetails;
+    @OneToMany(mappedBy = "reportTitle",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ReportDOfDetails> reportDOfDetails;
 }
