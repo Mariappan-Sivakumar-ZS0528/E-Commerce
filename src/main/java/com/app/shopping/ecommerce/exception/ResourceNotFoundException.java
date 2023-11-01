@@ -8,11 +8,18 @@ public class ResourceNotFoundException extends RuntimeException{
     private String resourceName;
     private String fieldName;
     private Long fieldValue;
+    private String fieldValueString;
     public ResourceNotFoundException(String resourceName, String fieldName, Long fieldValue) {
         super(String.format("%s not found with %s : '%s'", resourceName, fieldName, fieldValue));
         this.resourceName = resourceName;
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
+    }
+    public ResourceNotFoundException(String resourceName, String fieldName, String fieldValue) {
+        super(String.format("%s not found with %s : '%s'", resourceName, fieldName, fieldValue));
+        this.resourceName = resourceName;
+        this.fieldName = fieldName;
+        this.fieldValueString = fieldValue;
     }
 
     public String getResourceName() {
@@ -25,5 +32,8 @@ public class ResourceNotFoundException extends RuntimeException{
 
     public Long getFieldValue() {
         return fieldValue;
+    }
+    public String getFieldValueString() {
+        return fieldValueString;
     }
 }
