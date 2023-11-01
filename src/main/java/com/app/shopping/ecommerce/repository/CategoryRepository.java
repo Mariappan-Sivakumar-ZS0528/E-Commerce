@@ -9,4 +9,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByMobileImageName(String fileName);
     Optional<Category> findByDesktopImageName(String fileName);
     Optional<Category> findByThumbnailImageName(String fileName);
+    Optional<Category> findByName(String name);
 }
