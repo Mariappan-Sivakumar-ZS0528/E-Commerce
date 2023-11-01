@@ -57,6 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"api/legal/**").permitAll()
                                 .requestMatchers("swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/product/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
