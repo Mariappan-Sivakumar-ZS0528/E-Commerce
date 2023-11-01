@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.Set;
+
 //import java.util.List;
 @Entity
 @Getter
@@ -30,14 +34,6 @@ public class Supplier {
     private String accountNumber;
     private String sortCode;
     private String bankBranch;
-
-//    @OneToMany(mappedBy = "supplier")
-//    private List<Rating> ratings;
-//
-//    @OneToOne(mappedBy = "supplier")
-//    private ContactPerson contactPerson;
-//
-//    @OneToOne(mappedBy = "supplier")
-//    private BankAccount bankAccount;
-
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Product> products;
 }
