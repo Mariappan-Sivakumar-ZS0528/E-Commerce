@@ -67,5 +67,4 @@ public class SupplierController {
     public ResponseEntity<ShowDetailsDto> getSupplierDetails(HttpServletRequest request) {
         return ResponseEntity.ok(showDetailsService.getShowDetails(request));
     }
-
 }
