@@ -11,21 +11,11 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
+public class ProductOfferDto {
     private Long id;
-    private String name;
-    private String description;
-    private Double price;
-    private int unit;
-    private int discount;
-    private String imageName1;
-    private String imageName2;
-    private String imageName3;
-    private String imageName4;
-    private String subCategoryName;
-    private String categoryName;
     private boolean isActive;
     private String offerDurationType;
     private Date startingDate;
     private Date endingDate;
+    private int discount;
 }

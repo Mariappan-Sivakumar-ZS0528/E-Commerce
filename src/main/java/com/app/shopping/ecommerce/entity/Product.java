@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,7 +22,6 @@ public class Product {
     private String description;
     private Double price;
     private int unit;
-    private int discount;
     private String imageName1;
     private String imageName2;
     private String imageName3;
@@ -32,15 +33,22 @@ public class Product {
     @Column(length = 1000000)
     private byte[] imageData2;
     @Lob
-    @Column(length = 10000)
+    @Column(length = 1000000)
     private byte[] imageData3;
     @Lob
-    @Column(length = 10000)
+    @Column(length = 1000000)
     private byte[] imageData4;
     private String imageType1;
     private String imageType2;
     private String imageType3;
     private String imageType4;
+    private boolean isActive;
+    private String offerDurationType;
+    @Temporal(TemporalType.DATE)
+    private Date startingDate;
+    @Temporal(TemporalType.DATE)
+    private Date endingDate;
+    private double discount;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -50,4 +58,13 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
+    public boolean isActive() {
+        Date currentDate = new Date();
+        if (currentDate.after(this.getStartingDate()) && currentDate.before(this.getEndingDate())) {
+            this.setActive(true); // Set isActive to true if the current date is in between start and end dates.
+        } else {
+            this.setActive(false); // Set isActive to false if the current date is outside the range.
+        }
+        return this.isActive;
+    }
 }
