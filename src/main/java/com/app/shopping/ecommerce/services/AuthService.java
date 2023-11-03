@@ -11,5 +11,5 @@ public interface AuthService {
     String login(LoginDto loginDto);
     AdminRegistrationDto registerAdmin(AdminRegistrationDto adminRegistrationDto);
     List<AdminRegistrationDto> getAllAdmins();
-    String  updateSupplierPassword(Long id, SupplierPassword supplierPassword);
+    String setSupplierPassword(Long id, SupplierPassword supplierPassword);
 }
