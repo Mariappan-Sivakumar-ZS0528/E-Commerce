@@ -48,6 +48,6 @@ public class AuthController {
     @Operation(summary = "Update Supplier Password", description = "Update Supplier Password")
     @PutMapping("/supplier/{id}")
     public ResponseEntity<String> updateSupplierPassword(@PathVariable Long id, @RequestBody SupplierPassword supplierPassword){
-        return ResponseEntity.ok(authService.updateSupplierPassword(id, supplierPassword));
+        return ResponseEntity.ok(authService.setSupplierPassword(id, supplierPassword));
     }
 }

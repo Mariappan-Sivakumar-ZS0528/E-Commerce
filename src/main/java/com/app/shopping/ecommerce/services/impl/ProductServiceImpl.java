@@ -121,9 +121,9 @@ public class ProductServiceImpl implements ProductService {
         product.setName(productDto.getName());
         product.setDescription(productDto.getDescription());
         product.setPrice(productDto.getPrice());
-        product.setUnit(productDto.getUnit());
+        product.setQuantity(productDto.getQuantity());
         product.setDiscount(productDto.getDiscount());
-        product.setUnit(productDto.getUnit());
+//        product.setInventory(productDto.getInventory());
         product.setCategory(category);
         product.setSubCategory(subCategory);
         Product savedProduct = productRepository.save(product);
@@ -151,7 +151,7 @@ public class ProductServiceImpl implements ProductService {
         if (! product.getSupplier().equals(supplier)){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be accessed");
         }
-        product.setUnit(product.getUnit()+units);
+        product.setInventory(product.getInventory()+units);
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductDto.class);
     }
@@ -164,7 +164,7 @@ public class ProductServiceImpl implements ProductService {
         if (! product.getSupplier().equals(supplier)){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be accessed");
         }
-        product.setUnit(product.getUnit()-units);
+        product.setInventory(product.getInventory()-units);
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductDto.class);
     }
