@@ -23,14 +23,14 @@ public class JwtTokenProvider {
     private long jwtExpirationMs;
 
     //    generate Jwt Token
-    public String generateJwtToken(Authentication authentication) {
-
-        String email = authentication.getName();
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + jwtExpirationMs);
-        String token = Jwts.builder().setSubject(email).setIssuedAt(new Date()).setExpiration(expireDate).signWith(key()).compact();
-        return token;
-    }
+//    public String generateJwtToken(Authentication authentication) {
+//
+//        String email = authentication.getName();
+//        Date currentDate = new Date();
+//        Date expireDate = new Date(currentDate.getTime() + jwtExpirationMs);
+//        String token = Jwts.builder().setSubject(email).setIssuedAt(new Date()).setExpiration(expireDate).signWith(key()).compact();
+//        return token;
+//    }
 
     private Key key() {
         return Keys.hmacShaKeyFor(

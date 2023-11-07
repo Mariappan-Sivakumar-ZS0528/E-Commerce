@@ -89,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
         return users.stream().map(user -> modelMapper.map(user, AdminRegistrationDto.class)).toList();
     }
 
-    public String updateSupplierPassword(Long id, SupplierPassword supplierPassword) {
+    public String setSupplierPassword(Long id, SupplierPassword supplierPassword) {
         if (! (supplierPassword.getPassword().equals(supplierPassword.getConfirmPassword())&& supplierPassword.getPassword().length()>8)){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Password does not match");
         }
