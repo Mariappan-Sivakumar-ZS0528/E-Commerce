@@ -1,6 +1,7 @@
 package com.app.shopping.ecommerce.services;
 
 import com.app.shopping.ecommerce.payload.FullwidthDisplayFeaturedPromosDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
