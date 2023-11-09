@@ -26,5 +26,6 @@ public class Order {
     private Date placedOn;
     private Date deliveryOn;
     private String status;
-    private List<Product> products;
+
+//    private List<Product> products;
 }

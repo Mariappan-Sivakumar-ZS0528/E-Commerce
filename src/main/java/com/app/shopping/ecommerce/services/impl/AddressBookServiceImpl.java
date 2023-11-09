@@ -116,5 +116,4 @@ public class AddressBookServiceImpl implements AddressBookService {
         addressBookRepository.save(addressBook);
         return "Address Set as Default";
     }
-
 }
