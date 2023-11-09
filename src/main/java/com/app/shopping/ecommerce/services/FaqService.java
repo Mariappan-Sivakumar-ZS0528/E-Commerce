@@ -6,7 +6,8 @@ import com.app.shopping.ecommerce.payload.FaqDto;
 import java.util.List;
 
 public interface FaqService {
-    FaqDto addFaq(FaqDto newFaq);
+    FaqDto
+    addFaq(FaqDto newFaq);
     FaqDto getFaqById(Long id);
     List<FaqDto> getAllFaq();
 

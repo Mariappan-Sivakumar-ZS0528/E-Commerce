@@ -1,6 +1,7 @@
 package com.app.shopping.ecommerce.controller;
 
 import com.app.shopping.ecommerce.payload.ShowDetailsDto;
+import com.app.shopping.ecommerce.payload.SupplierContactDto;
 import com.app.shopping.ecommerce.payload.SupplierDto;
 import com.app.shopping.ecommerce.payload.SupplierReg;
 import com.app.shopping.ecommerce.services.ShowDetailsService;
@@ -36,16 +37,19 @@ public class SupplierController {
         return new ResponseEntity<>(supplierService.RegistrationSupplier(newSupplier), HttpStatus.CREATED);
 
     }
+
     @Operation(summary = "Get all suppliers")
     @GetMapping
     public ResponseEntity<List<SupplierDto>> getAllSuppliers() {
         return ResponseEntity.ok(supplierService.getAllSuppliers());
     }
+
     @Operation(summary = "Get supplier by id")
     @GetMapping("/{id}")
     public ResponseEntity<SupplierDto> getSupplierById(@PathVariable Long id) {
         return ResponseEntity.ok(supplierService.getSupplierById(id));
     }
+
     @Operation(summary = "Update supplier")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -53,6 +57,7 @@ public class SupplierController {
     public ResponseEntity<SupplierDto> updateSupplier(@PathVariable Long id, @RequestBody SupplierDto updatedSupplier) {
         return ResponseEntity.ok(supplierService.updateSupplier(id, updatedSupplier));
     }
+
     @Operation(summary = "Delete supplier")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -60,11 +65,29 @@ public class SupplierController {
     public ResponseEntity<Boolean> deleteSupplier(@PathVariable Long id) {
         return ResponseEntity.ok(supplierService.deleteSupplier(id));
     }
-    @GetMapping("getDetail")
+
+    @GetMapping("api/getDetail")
     @Operation(summary = "Get supplier details")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_MERCHANT')")
     public ResponseEntity<ShowDetailsDto> getSupplierDetails(HttpServletRequest request) {
         return ResponseEntity.ok(showDetailsService.getShowDetails(request));
     }
+    @Operation(summary = "Update supplier contact person")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_MERCHANT')")
+    @PostMapping("api/contact-details")
+    public ResponseEntity<SupplierContactDto> updateSupplierContact(@PathVariable Long id, @RequestBody SupplierContactDto updatedSupplierContact) {
+        return ResponseEntity.ok(supplierService.UpdateSupplierContact(id, updatedSupplierContact));
+    }
+
+    @GetMapping("api/getContact-person")
+    @Operation(summary = "Get supplier contact person")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_MERCHANT')")
+    public ResponseEntity<SupplierContactDto> getSupplierContactById(@PathVariable Long id) {
+        return ResponseEntity.ok(supplierService.getSupplierContactById(id));
+    }
+
+
 }
