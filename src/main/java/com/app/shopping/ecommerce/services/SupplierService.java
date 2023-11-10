@@ -6,7 +6,7 @@ import com.app.shopping.ecommerce.payload.SupplierReg;
 import java.util.List;
 
 public interface SupplierService {
-    SupplierReg registrationSupplier(SupplierReg supplierreg);
+    SupplierReg registrationSupplier(SupplierReg supplierReg);
 
     SupplierDto getSupplierById(Long id);
 

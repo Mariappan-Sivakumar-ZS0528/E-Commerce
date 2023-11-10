@@ -78,11 +78,7 @@ class ProductServiceImplTest {
         product.setSupplier(supplier);
         product.setCategory(category);
         product.setSubCategory(subCategory);
-        List<Product> supplierProducts = new ArrayList<>();
-        for (Product product1 :
-                supplier.getProducts()) {
-            supplierProducts.add(product1);
-        }
+        List<Product> supplierProducts = new ArrayList<>(supplier.getProducts());
 
         request.addHeader("Authentication","");
 
