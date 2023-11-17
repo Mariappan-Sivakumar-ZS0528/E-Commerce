@@ -26,5 +26,6 @@ public class Order {
     private Date placedOn;
     private Date deliveryOn;
     private String status;
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }
