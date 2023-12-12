@@ -68,7 +68,10 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public List<SubCategoryDto> getSubCategoriesByCategoryId(Long categoryId) {
-        List<SubCategory> subCategories=subCategoryRepository.getSubCategoriesByCategoryId(categoryId);
+        List<SubCategory> subCategories=subCategoryRepository.findByCategoryId(categoryId);
+        if (subCategories.isEmpty()){
+            throw new ResourceNotFoundException("SubCategory","category id",categoryId);
+        }
         return subCategories.stream().map(subCategory -> modelMapper.map(subCategory, SubCategoryDto.class)).toList();
     }
 }
