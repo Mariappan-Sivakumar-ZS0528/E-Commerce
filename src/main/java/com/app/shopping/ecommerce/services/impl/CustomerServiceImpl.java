@@ -11,6 +11,7 @@ import com.app.shopping.ecommerce.repository.UserRepository;
 import com.app.shopping.ecommerce.services.CustomerService;
 import com.app.shopping.ecommerce.util.EmailExtractor;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
