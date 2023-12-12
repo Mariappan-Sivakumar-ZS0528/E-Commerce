@@ -22,4 +22,6 @@ public class Customer {
     private String number;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AddressBook> addressBooks;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Cart> carts;
 }
