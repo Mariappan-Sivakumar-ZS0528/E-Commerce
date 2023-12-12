@@ -70,3 +70,4 @@ public class Product {
             this.setActive(false); // Set isActive to false if the current date is outside the range.
         }
     }
+}
