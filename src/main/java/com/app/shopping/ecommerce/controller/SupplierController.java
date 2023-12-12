@@ -34,7 +34,7 @@ public class SupplierController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<SupplierReg> addSupplier(@RequestBody SupplierReg newSupplier) {
-        return new ResponseEntity<>(supplierService.RegistrationSupplier(newSupplier), HttpStatus.CREATED);
+        return new ResponseEntity<>(supplierService.registrationSupplier(newSupplier), HttpStatus.CREATED);
 
     }
 

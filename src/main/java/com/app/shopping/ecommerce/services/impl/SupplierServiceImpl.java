@@ -31,7 +31,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public SupplierReg RegistrationSupplier(SupplierReg supplierReg) {
+    public SupplierReg registrationSupplier(SupplierReg supplierReg) {
         Supplier supplier = modelMapper.map(supplierReg, Supplier.class);
         return modelMapper.map(supplierRepository.save(supplier), SupplierReg.class);
     }

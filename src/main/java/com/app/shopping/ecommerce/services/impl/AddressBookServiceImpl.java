@@ -11,6 +11,8 @@ import com.app.shopping.ecommerce.services.AddressBookService;
 import com.app.shopping.ecommerce.util.EmailExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class AddressBookServiceImpl implements AddressBookService {
     private AddressBookRepository addressBookRepository;
     private CustomerRepository customerRepository;
     private ModelMapper modelMapper;
-
+    Logger logger= LoggerFactory.getLogger(AddressBookServiceImpl.class);
     public AddressBookServiceImpl(EmailExtractor emailExtractor, AddressBookRepository addressBookRepository, CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.emailExtractor = emailExtractor;
         this.addressBookRepository = addressBookRepository;
@@ -47,7 +49,9 @@ public class AddressBookServiceImpl implements AddressBookService {
         if (customer.getAddressBooks().size() == 0) {
             addressBook.setDefault(true);
         }
-        return modelMapper.map(addressBookRepository.save(addressBook), AddressBookDto.class);
+        AddressBook addressBook1=addressBookRepository.save(addressBook);
+        logger.info(addressBook.getAddressLine1()+" "+addressBook1.getAddressLine1());
+        return modelMapper.map(addressBook1, AddressBookDto.class);
     }
 
     @Override
@@ -55,7 +59,7 @@ public class AddressBookServiceImpl implements AddressBookService {
         String email=emailExtractor.getEmailFromRequest(request);
         Customer customer = customerRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Customer", "email", email));
         AddressBook addressBook = addressBookRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("AddressBook", "id", id));
-        if(!addressBook.getCustomer().equals(customer)){
+        if(!addressBook.getCustomer().getId().equals(customer.getId())){
             throw new ECommerceApiException(HttpStatus.UNAUTHORIZED,"You didn't have the access. Access Denied");
         }
         return modelMapper.map(addressBook, AddressBookDto.class);
@@ -116,5 +120,4 @@ public class AddressBookServiceImpl implements AddressBookService {
         addressBookRepository.save(addressBook);
         return "Address Set as Default";
     }
-
 }
