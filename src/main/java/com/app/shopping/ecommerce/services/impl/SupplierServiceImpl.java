@@ -1,12 +1,7 @@
 package com.app.shopping.ecommerce.services.impl;
-
-import com.app.shopping.ecommerce.entity.Role;
 import com.app.shopping.ecommerce.entity.Supplier;
-import com.app.shopping.ecommerce.entity.User;
 import com.app.shopping.ecommerce.exception.ResourceNotFoundException;
-import com.app.shopping.ecommerce.payload.SupplierDto;
-import com.app.shopping.ecommerce.payload.SupplierPassword;
-import com.app.shopping.ecommerce.payload.SupplierReg;
+import com.app.shopping.ecommerce.payload.*;
 import com.app.shopping.ecommerce.repository.RoleRepository;
 import com.app.shopping.ecommerce.repository.SupplierRepository;
 import com.app.shopping.ecommerce.repository.UserRepository;
@@ -16,19 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
     Logger logger= LoggerFactory.getLogger(SupplierServiceImpl.class);
     private final SupplierRepository supplierRepository;
     private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     private RoleRepository roleRepository;
 
     @Autowired
@@ -76,6 +67,49 @@ public class SupplierServiceImpl implements SupplierService {
         } else {
             throw new ResourceNotFoundException("Supplier", "id", id);
         }
+    }
+
+    @Override
+    public SupplierContactDto addSupplierContact(SupplierContactDto newSupplierContact) {
+        Supplier supplier = modelMapper.map(newSupplierContact, Supplier.class);
+        return modelMapper.map(supplierRepository.save(supplier), SupplierContactDto.class);
+    }
+    @Override
+    public SupplierContactDto getSupplierContactById(Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
+        return modelMapper.map(supplier, SupplierContactDto.class);
+    }
+    public SupplierContactDto UpdateSupplierContact(Long id, SupplierContactDto updatedSupplierContact) {
+        Optional<Supplier> existingSupplier = supplierRepository.findById(id);
+        if (existingSupplier.isPresent()) {
+            updatedSupplierContact.setId(id);
+            Supplier supplier = modelMapper.map(updatedSupplierContact, Supplier.class);
+            return modelMapper.map(supplierRepository.save(supplier), SupplierContactDto.class);
+        } else {
+            throw new ResourceNotFoundException("Supplier", "id", id);
+        }
+    }
+    @Override
+    public SupplierAccountInfoDto addSupplierAccountInfo(SupplierAccountInfoDto newSupplierAccountInfoDto) {
+        Supplier supplier = modelMapper.map(newSupplierAccountInfoDto, Supplier.class);
+        return modelMapper.map(supplierRepository.save(supplier), SupplierAccountInfoDto.class);
+    }
+
+    @Override
+    public SupplierAccountInfoDto UpdateSupplierAccountInfo(Long id, SupplierAccountInfoDto updatedSupplierAccountInfoDto) {
+        Optional<Supplier> existingSupplier = supplierRepository.findById(id);
+        if (existingSupplier.isPresent()) {
+            updatedSupplierAccountInfoDto.setId(id);
+            Supplier supplier = modelMapper.map(updatedSupplierAccountInfoDto, Supplier.class);
+            return modelMapper.map(supplierRepository.save(supplier), SupplierAccountInfoDto.class);
+        } else {
+            throw new ResourceNotFoundException("Supplier", "id", id);
+        }
+    }
+    @Override
+    public SupplierAccountInfoDto getSupplierAccountInfoById(Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
+        return modelMapper.map(supplier, SupplierAccountInfoDto.class);
     }
 
 }
