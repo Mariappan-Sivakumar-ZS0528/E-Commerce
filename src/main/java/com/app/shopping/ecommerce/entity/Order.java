@@ -13,16 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "orders")
 public class Order {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-private String orderBy;
-private String Location;
-private int items;
-private double price;
-private Date placedOn;
-private Date deliveryOn;
-private String status;
-@OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
-private List<Product> products;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String orderBy;
+    private String Location;
+    private int items;
+    private double price;
+    private Date placedOn;
+    private Date deliveryOn;
+    private String status;
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 }
