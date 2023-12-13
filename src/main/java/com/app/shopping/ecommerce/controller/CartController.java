@@ -30,4 +30,21 @@ public class CartController {
     public ResponseEntity<List<CartDto>> getAllCart(HttpServletRequest request) {
         return ResponseEntity.ok(cartService.getAllCart(request));
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartDto> getCartById(@PathVariable long cartId, HttpServletRequest request) {
+        return ResponseEntity.ok(cartService.getCartById(cartId, request));
+    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("/{cartId}")
+    public ResponseEntity<CartDto> updateCart(@PathVariable long cartId, @RequestBody CartDto cartDto, HttpServletRequest request) {
+        return ResponseEntity.ok(cartService.updateCart(cartId,cartDto, request));
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/{cartId}")
+    public ResponseEntity<String> deleteCart(@PathVariable long cartId, HttpServletRequest request) {
+        cartService.deleteCart(cartId, request);
+        return ResponseEntity.ok("Cart deleted successfully");
+    }
 }
