@@ -1,10 +1,10 @@
-package com.app.shopping.ecommerce.entity;
+    package com.app.shopping.ecommerce.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+    import jakarta.persistence.*;
+    import lombok.AllArgsConstructor;
+    import lombok.Getter;
+    import lombok.NoArgsConstructor;
+    import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
@@ -70,7 +70,6 @@ public class Product {
         } else {
             this.setActive(false); // Set isActive to false if the current date is outside the range.
         }
-        return this.isActive;
     }
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cart> carts;

@@ -59,7 +59,6 @@ public class SecurityConfig {
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/DisplayInTiles/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/FullWidthDisplay/**").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/DisplayInTilesPromos/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/product/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
