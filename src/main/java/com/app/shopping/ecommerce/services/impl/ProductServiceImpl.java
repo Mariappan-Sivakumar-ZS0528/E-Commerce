@@ -62,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
         product.setSubCategory(subCategory);
         product.setSupplier(supplier);
         Product savedProduct = productRepository.save(product);
+        logger.info("Saved product Id: "+savedProduct.getId());
         return modelMapper.map(savedProduct, ProductDto.class);
     }
 
@@ -245,5 +246,14 @@ public class ProductServiceImpl implements ProductService {
         product.setActive(product.isActive());
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductOfferDto.class);
+    }
+
+    @Override
+    public ProductOfferDto getProductOfferById(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product", "id", productId));
+        if (product.getStartingDate()==null||!product.isActive()){
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product offer is not active");
+        }
+        return modelMapper.map(product, ProductOfferDto.class);
     }
 }

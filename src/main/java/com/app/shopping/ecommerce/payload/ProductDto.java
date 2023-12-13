@@ -25,8 +25,8 @@ public class ProductDto {
     private String imageName4;
     private String subCategoryName;
     private String categoryName;
-    private boolean isActive;
-    private String offerDurationType;
-    private Date startingDate;
-    private Date endingDate;
+//    private boolean isActive;
+//    private String offerDurationType;
+//    private Date startingDate;
+//    private Date endingDate;
 }
