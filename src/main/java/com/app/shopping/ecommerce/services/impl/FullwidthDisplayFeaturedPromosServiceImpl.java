@@ -8,6 +8,7 @@ import com.app.shopping.ecommerce.services.FullwidthDisplayFeaturedPromosService
 import com.app.shopping.ecommerce.util.ImageDimensionExtractor;
 import com.app.shopping.ecommerce.util.ImageDimensions;
 import com.app.shopping.ecommerce.util.ImageUtils;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
 @Service
 public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDisplayFeaturedPromosService {
     private FullwidthDisplayFeaturedPromosRepository fullwidthDisplayFeaturedPromosRepository;
@@ -27,20 +27,17 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
         this.fullwidthDisplayFeaturedPromosRepository=fullwidthDisplayFeaturedPromosRepository;
         this.modelMapper=modelMapper;
     }
-
     @Override
     public List<FullwidthDisplayFeaturedPromosDto> getall() {
         List<FullwidthDisplayFeaturedPromos> fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findAll();
         return fullwidthDisplayFeaturedPromos.stream().map(fullwidthDisplayFeaturedPromos1 -> modelMapper.map(fullwidthDisplayFeaturedPromos1,FullwidthDisplayFeaturedPromosDto.class)).toList();
     }
-
     @Override
     public FullwidthDisplayFeaturedPromosDto add(FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=modelMapper.map(fullwidthDisplayFeaturedPromosDto,FullwidthDisplayFeaturedPromos.class);
         FullwidthDisplayFeaturedPromos updatedFullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
         return modelMapper.map(updatedFullwidthDisplayFeaturedPromos,FullwidthDisplayFeaturedPromosDto.class);
     }
-
     @Override
     public byte[] downloadMobileImage(Long id) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
@@ -57,7 +54,6 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
         }
         return null;
     }
-
     @Override
     public String getMeasurement(Long id,String WhichImageMeasurements) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
@@ -77,13 +73,11 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
             return "No record found in the provided id";
         }
     }
-
     @Override
     public String deletePromos(Long id) {
         fullwidthDisplayFeaturedPromosRepository.deleteById(id);
         return "Promo deleted successfully";
     }
-
     @Override
     public String disablePromos(Long id) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
@@ -96,7 +90,6 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
             return "No record found in the provided id";
         }
     }
-
     @Override
     public String enablePromos(Long id) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
@@ -109,7 +102,6 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
             return "No record found in the provided id";
         }
     }
-
     @Override
     public FullwidthDisplayFeaturedPromosDto updateWholePromos(Long id, FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
@@ -125,7 +117,6 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
             return null;
         }
     }
-
     @Override
     public String uploadImages(Long id,byte[] mobileImage, byte[] desktopImage) throws IOException {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);

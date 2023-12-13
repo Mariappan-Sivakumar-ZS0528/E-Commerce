@@ -123,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDto.getPrice());
         product.setQuantity(productDto.getQuantity());
         product.setDiscount(productDto.getDiscount());
-//        product.setInventory(productDto.getInventory());
+        product.setInventory(productDto.getInventory());
         product.setCategory(category);
         product.setSubCategory(subCategory);
         Product savedProduct = productRepository.save(product);
