@@ -7,6 +7,7 @@
     import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -70,4 +71,6 @@ public class Product {
             this.setActive(false); // Set isActive to false if the current date is outside the range.
         }
     }
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cart> carts;
 }
