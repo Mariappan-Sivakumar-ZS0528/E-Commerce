@@ -60,6 +60,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/api/DisplayInTiles/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/FullWidthDisplay/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/product/**").permitAll()
+                                .requestMatchers("/forgot-password/**").permitAll()
+                                .requestMatchers("/forgot-password").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
