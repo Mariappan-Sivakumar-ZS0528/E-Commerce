@@ -94,4 +94,9 @@ public class ProductController {
         logger.info(productOfferDto.toString());
         return ResponseEntity.ok(productService.createProductOffer(productId,productOfferDto, request));
     }
+
+    @GetMapping("/getProductOffer/{productId}")
+    public ResponseEntity<ProductOfferDto> getProductOfferById(@PathVariable Long productId){
+        return ResponseEntity.ok(productService.getProductOfferById(productId));
+    }
 }

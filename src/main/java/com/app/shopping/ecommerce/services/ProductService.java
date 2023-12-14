@@ -24,5 +24,6 @@ public interface ProductService {
     String uploadImage(Long productId, HttpServletRequest request, MultipartFile... images) throws IOException;
     byte[] downloadImage(Long productId, String imageName);
     ProductOfferDto createProductOffer(Long productId,ProductOfferDto productOfferDto, HttpServletRequest request);
+    ProductOfferDto getProductOfferById(Long productId);
 
 }
