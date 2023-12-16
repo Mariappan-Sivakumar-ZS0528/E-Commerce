@@ -79,27 +79,5 @@ public class OrderProductServiceImpl implements OrderProductService {
         order.setCustomer(customer);
         Order order1=orderRepository.save(order);
         return "done";
-//        Long id=order1.getId();
-//        for (Product pro:products) {
-//            OrderProduct orderProduct = orderProductRepository.findByOrderIdAndProductId(id,customer.getId());
-//            orderProduct.setProduct(pro);
-//            orderProduct.setQuantity(cartRepository.findByProductIdAndCustomerId(pro.getId(),customer.getId()).getQuantity());
-//            orderProduct.setPrice(pro.getPrice()*cartRepository.findByProductIdAndCustomerId(pro.getId(),customer.getId()).getQuantity());
-//            orderProductRepository.save(orderProduct);
-//        }
-//        for (Cart cart1: cart) {
-//            OrderProduct orderProduct = new OrderProduct();
-//            orderProduct.setProduct(cart1.getProduct());
-//            orderProduct.setQuantity(cart1.getQuantity());
-//        }
-//        orderProductRepository.saveAll(orderProducts);
-//        cartRepository.deleteAll(cart);
-////        List<OrderProduct> orderProducts1
-//        for (OrderProduct orderProduct: orderProducts) {
-//            double price=orderProduct.getProduct().getPrice();
-//            int quantity=orderProduct.getQuantity();
-//            orderProduct.setPrice(price*quantity);
-//            orderProductRepository.save(orderProduct);
-//        }
     }
 }
