@@ -27,4 +27,9 @@ public class AddressBook {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @Override
+    public String toString() {
+        return addressLine1+" "+addressLine2+" "+addressLine3+" "+postalCode+" "+city;
+    }
 }

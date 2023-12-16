@@ -60,9 +60,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
     public boolean isActive() {
         Date currentDate = new Date();
         if (currentDate.after(this.getStartingDate()) && currentDate.before(this.getEndingDate())) {
@@ -70,7 +67,6 @@ public class Product {
         } else {
             this.setActive(false); // Set isActive to false if the current date is outside the range.
         }
+        return this.isActive;
     }
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cart> carts;
 }

@@ -24,5 +24,8 @@ public class Order {
     private Date deliveryOn;
     private String status;
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products;
+    private List<OrderProduct> orderProducts;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }
