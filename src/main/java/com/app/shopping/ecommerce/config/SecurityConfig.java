@@ -61,6 +61,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/api/FullWidthDisplay/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/DisplayInTilesPromos/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/product/**").permitAll()
+                                .requestMatchers("/api/data/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).exceptionHandling((exception)->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
