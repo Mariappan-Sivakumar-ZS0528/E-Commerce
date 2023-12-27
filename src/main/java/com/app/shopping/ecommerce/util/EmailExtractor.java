@@ -19,7 +19,7 @@ public class EmailExtractor {
     Logger logger= LoggerFactory.getLogger(EmailExtractor.class);
 
     public String getEmailFromRequest(HttpServletRequest request) {
-        logger.info(request.getHeader("Authorization"));
+//        logger.info(request.getHeader("Authorization"));
         String bearerToken = request.getHeader("Authorization");
         if (!(bearerToken != null && bearerToken.startsWith("Bearer "))) {
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST, "Invalid token");
