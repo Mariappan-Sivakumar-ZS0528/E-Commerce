@@ -15,11 +15,11 @@ public class BackUpRestoreController {
     @GetMapping("/backup/{entity}")
     public ResponseEntity<String > generateSql(@PathVariable String entity) {
         backUpRestoreService.fileGenerator(entity);
-        return ResponseEntity.ok("Sql Generated");
+        return ResponseEntity.ok("Backup Created Successfully");
     }
     @GetMapping("/restore/{entity}")
     public ResponseEntity<String > runSql(@PathVariable String entity) {
         backUpRestoreService.fileRun(entity);
-        return ResponseEntity.ok("Sql Run");
+        return ResponseEntity.ok("Restore Completed Successfully");
     }
 }
