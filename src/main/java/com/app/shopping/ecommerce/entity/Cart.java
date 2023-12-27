@@ -15,13 +15,14 @@ import java.io.Serializable;
 @Entity
 @Table(name = "cart")
 public class Cart implements Serializable {
+    public static final long serialVersionUID = 4801633306273802062L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
     private int quantity;
