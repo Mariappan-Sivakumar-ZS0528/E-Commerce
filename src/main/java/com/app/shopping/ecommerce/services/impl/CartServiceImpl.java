@@ -42,16 +42,17 @@ public class CartServiceImpl implements CartService {
         String email = emailExtractor.getEmailFromRequest(request);
         Customer customer = customerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Customer", "email", email));
         Cart cart1 = cartRepository.findByCustomer(customer).stream().filter(c -> c.getProduct().getId().equals(cartDto.getProductId())).findFirst().orElse(null);
+        Product product = productRepository.findById(cartDto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product", "id", cartDto.getProductId()));
+
+        if (product.getInventory() < cartDto.getQuantity()) {
+            throw new ECommerceApiException(HttpStatus.BAD_REQUEST, "Out of stock");
+        }
         if (cart1 != null) {
             cart1.setQuantity(cart1.getQuantity() + cartDto.getQuantity());
             cartRepository.save(cart1);
             return modelMapper.map(cart1, CartDto.class);
         } else {
             Cart cart = new Cart();
-            Product product = productRepository.findById(cartDto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product", "id", cartDto.getProductId()));
-            if (product.getInventory() < cartDto.getQuantity()) {
-                throw new ECommerceApiException(HttpStatus.BAD_REQUEST, "Out of stock");
-            }
 
             cart.setProduct(product);
             cart.setQuantity(cartDto.getQuantity());
