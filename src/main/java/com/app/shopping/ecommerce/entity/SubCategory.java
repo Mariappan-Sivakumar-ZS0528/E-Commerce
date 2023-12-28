@@ -21,7 +21,7 @@ public class SubCategory {
     private String name;
     @Column(nullable = false)
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
     @OneToMany(mappedBy = "subCategory",cascade = CascadeType.ALL,orphanRemoval = true)

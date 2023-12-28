@@ -20,7 +20,7 @@ public class ReportDetails
     private Long id;
     private String name;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "report_title_id")
     private ReportTitle reportTitle;
 }
