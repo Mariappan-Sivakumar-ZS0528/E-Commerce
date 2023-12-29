@@ -52,18 +52,18 @@ public class AuthController {
         return ResponseEntity.ok(authService.setSupplierPassword(id, supplierPassword));
     }
     @PostMapping("/reset")
-    public ResponseEntity<String> processPasswordReset(@RequestBody Map<String, String> request, Model model) {
+    public ResponseEntity<String> processPasswordReset(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String pin = request.get("pin");
         String newPassword = request.get("newPassword");
         // Call the service method to process password reset
-        String result = authService.processPasswordReset(email, pin, newPassword, model);
+        String result = authService.processPasswordReset(email, pin, newPassword);
         return ResponseEntity.ok().body(result);
     }
     @PostMapping("/forgot-password")
     public ResponseEntity<String> sendPasswordResetPin(@RequestBody Map<String, String> request, Model model) {
         String email = request.get("email");
-        String result = authService.sendPasswordResetPin(email, model);
+        String result = authService.sendPasswordResetPin(email);
         return  ResponseEntity.ok().body(result);
     }
 }

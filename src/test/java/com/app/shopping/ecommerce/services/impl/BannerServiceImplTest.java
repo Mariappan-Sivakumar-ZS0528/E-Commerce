@@ -1,4 +1,4 @@
-package com.app.shopping.ecommerce;
+package com.app.shopping.ecommerce.services.impl;
 import com.app.shopping.ecommerce.entity.Banner;
 import com.app.shopping.ecommerce.payload.AddressBookDto;
 import com.app.shopping.ecommerce.payload.BannerLinkDto;

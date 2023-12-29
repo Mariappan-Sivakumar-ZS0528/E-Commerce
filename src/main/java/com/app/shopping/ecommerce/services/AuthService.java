@@ -14,6 +14,6 @@ public interface AuthService {
     List<AdminRegistrationDto> getAllAdmins();
     String setSupplierPassword(Long id, SupplierPassword supplierPassword);
 
-    String sendPasswordResetPin(String email, Model model);
-    String processPasswordReset(String email, String pin, String newPassword, Model model);
+    String sendPasswordResetPin(String email);
+    String processPasswordReset(String email, String pin, String newPassword);
 }

@@ -112,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String sendPasswordResetPin(String email, Model model) {
+    public String sendPasswordResetPin(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User", "email ", email));
         // Generate a PIN
         String pin = generatePin();
@@ -125,7 +125,7 @@ public class AuthServiceImpl implements AuthService {
         return "Password reset PIN sent to your email";
     }
     @Override
-    public String processPasswordReset(String email, String pin, String newPassword, Model model) {
+    public String processPasswordReset(String email, String pin, String newPassword) {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User", "email", email));
         // Check if the provided PIN matches the user's PIN
         if (pin.equals(user.getPin())) {
