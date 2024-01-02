@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -99,7 +100,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> searchProduct(String query) {
-        return productRepository.search(query).stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+        List<Product> products = productRepository.search(query);
+        List<Supplier> suppliers = supplierRepository.search(query); //<-->
+        if (!(suppliers.isEmpty())){
+            for (Supplier supplier : suppliers) {
+                products.addAll(productRepository.findBySupplier(supplier));
+            }
+        }
+        Set<Product> set = Set.copyOf(products); //<-->
+        return set.stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
     }
 
     @Override
