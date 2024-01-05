@@ -69,6 +69,7 @@ public class CartServiceImpl implements CartService {
         if (!cart.getCustomer().getId().equals(customer.getId())) {
             throw new ECommerceApiException(HttpStatus.FORBIDDEN, "Access denied");
         }
+        logger.info("Cart found with id: {}", cartId);
         return modelMapper.map(cart, CartDto.class);
     }
     @Override
