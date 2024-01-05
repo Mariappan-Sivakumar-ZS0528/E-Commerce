@@ -13,6 +13,7 @@ import com.app.shopping.ecommerce.repository.SupplierRepository;
 import com.app.shopping.ecommerce.repository.UserRepository;
 import com.app.shopping.ecommerce.security.JwtTokenProvider;
 import com.app.shopping.ecommerce.services.AuthService;
+import com.app.shopping.ecommerce.services.EmailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,11 +22,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -36,8 +35,8 @@ public class AuthServiceImpl implements AuthService {
     private ModelMapper modelMapper;
     private SupplierRepository supplierRepository;
     private PasswordEncoder passwordEncoder;
-
-    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, SupplierRepository supplierRepository, PasswordEncoder passwordEncoder) {
+    private EmailService emailService;
+    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, SupplierRepository supplierRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
@@ -45,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
         this.modelMapper = modelMapper;
         this.supplierRepository = supplierRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @Override
@@ -109,5 +109,55 @@ public class AuthServiceImpl implements AuthService {
         else {
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Email does not match");
         }
+    }
+
+    @Override
+    public String sendPasswordResetPin(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User", "email ", email));
+        // Generate a PIN
+        String pin = generatePin();
+        // Save the PIN to the user
+        user.setPin(pin);
+        userRepository.save(user);
+        // Send the PIN to the user's email
+        emailService.sendPinToUser(email, pin);
+//            model.addAttribute("message", "Password reset PIN sent to your email");
+        return "Password reset PIN sent to your email";
+    }
+    @Override
+    public String processPasswordReset(String email, String pin, String newPassword) {
+        User user = userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User", "email", email));
+        // Check if the provided PIN matches the user's PIN
+        if (pin.equals(user.getPin())) {
+            // Reset the password
+            user.setPassword(passwordEncoder.encode(newPassword));
+//                user.setPassword(newPassword);
+            // Clear the PIN
+            user.setPin(null);
+            // Save the updated user with the new password and cleared PIN
+            userRepository.save(user);
+//                model.addAttribute("message", "Password reset successfully");
+            return "Password reset successfully";
+        }
+        else
+        {
+//                model.addAttribute("error", "Invalid PIN");
+            return "Invalid PIN";
+        }
+    }
+    // Implement the method to generate a PIN
+    private String generatePin() {
+        // Implement your logic to generate a PIN
+        // ...
+//        return "generatedPin";
+        int pinLength = 6; // You can adjust the length of the PIN as needed
+        StringBuilder pin = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < pinLength; i++) {
+            int digit = random.nextInt(10); // Generates a random digit (0-9)
+            pin.append(digit);
+        }
+        return pin.toString();
     }
 }

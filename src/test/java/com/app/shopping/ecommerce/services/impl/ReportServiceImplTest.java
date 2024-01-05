@@ -1,4 +1,4 @@
-package com.app.shopping.ecommerce;
+package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.ReportDetails;
 import com.app.shopping.ecommerce.entity.ReportTitle;
