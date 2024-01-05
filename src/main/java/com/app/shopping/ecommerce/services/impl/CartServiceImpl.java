@@ -89,6 +89,7 @@ public class CartServiceImpl implements CartService {
             throw new ECommerceApiException(HttpStatus.FORBIDDEN, "Access denied");
         }
         cart.setQuantity(cartDto.getQuantity());
+        logger.info("Cart updated successfully with id: {}", cartId);
         return modelMapper.map(cartRepository.save(cart), CartDto.class);
     }
 
