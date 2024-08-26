@@ -35,19 +35,24 @@ public class BannerServiceimpl implements BannerService {
 //                desktopImageName(desktopImage.getOriginalFilename()).imageType(desktopImage.getContentType()).
 //                desktopImageData(ImageUtils.compressImage(desktopImage.getBytes())).build());
 
-        Banner banner = storageRepository.save(Banner.builder().mobileImageName(mobileImage.getOriginalFilename()).
-                imageType(mobileImage.getContentType()).mobileImageData(ImageUtils.compressImage(mobileImage.getBytes())).
-                desktopImageName(desktopImage.getOriginalFilename()).imageType(desktopImage.getContentType()).
-                desktopImageData(ImageUtils.compressImage(desktopImage.getBytes())).build());
-        if (banner != null) {
-            return "file uploaded successfully: " + mobileImage.getOriginalFilename() + " " + desktopImage.getOriginalFilename();
-        }
-        return null;
+        Banner banner = storageRepository.save(Banner.builder()
+                .mobileImageName(mobileImage.getOriginalFilename())
+                .imageType(mobileImage.getContentType())
+                .mobileImageData(
+                        ImageUtils.compressImage(mobileImage.getBytes())
+                )
+                .desktopImageName(desktopImage.getOriginalFilename())
+                .imageType(desktopImage.getContentType())
+                .desktopImageData(
+                        ImageUtils.compressImage(desktopImage.getBytes())
+                ).build());
+        return "file uploaded successfully: " + mobileImage.getOriginalFilename() + " " + desktopImage.getOriginalFilename();
+
     }
 
     public byte[] downloadDesktopImage(Long id,String desktopImageName) {
         Banner banner = storageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Banner", "id", id));
-        if (banner != null&& Objects.equals(banner.getDesktopImageName(), desktopImageName)) {
+        if (Objects.equals(banner.getDesktopImageName(), desktopImageName)) {
             return ImageUtils.decompressImage(banner.getDesktopImageData());
         }
 //        Banner imageData = storageRepository.findByDesktopImageName(desktopImageName).orElse(null);
@@ -70,10 +75,7 @@ public class BannerServiceimpl implements BannerService {
     public BannerLinkDto uploadLink(BannerLinkDto bannerLinkDto)
     {
         Banner banner = storageRepository.save(modelMapper.map(bannerLinkDto, Banner.class));
-        if (banner != null) {
-            return modelMapper.map(banner, BannerLinkDto.class);
-        }
-        return null;
+        return modelMapper.map(banner, BannerLinkDto.class);
     }
 
     @Override
