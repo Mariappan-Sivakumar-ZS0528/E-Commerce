@@ -25,9 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -101,16 +101,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> searchProduct(String query) {
         List<Product> products = productRepository.search(query);
-        List<Supplier> suppliers = supplierRepository.search(query); //<-->
+        List<Supplier> suppliers = supplierRepository.search(query);//<-->
+        List<Product> set = new ArrayList<>(); //<-->
+        set.addAll(products);
         if (!(suppliers.isEmpty())){
             for (Supplier supplier : suppliers) {
-                products.addAll(productRepository.findBySupplier(supplier));
+                set.addAll(productRepository.findBySupplier(supplier));
             }
         }
-        Set<Product> set = Set.copyOf(products); //<-->
-        return set.stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+        List<Product> set1 = new ArrayList<>(set); //<-->
+        return set1.stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
     }
-
     @Override
     public List<ProductDto> searchProductInSupplier(Long id,String query) {
         Supplier supplier = supplierRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Supplier", "id", id));
@@ -139,16 +140,17 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductDto.class);
     }
-
     @Override
-    public void deleteProduct(Long productId, HttpServletRequest request) {
+    public boolean deleteProduct(Long productId, HttpServletRequest request)
+    {
         String email=emailExtractor.getEmailFromRequest(request);
         Supplier supplier = supplierRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("Supplier", "email", email));
         Product product = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product", "id", productId));
         if (! product.getSupplier().equals(supplier)){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"Product cannot be deleted");
         }
-        productRepository.delete(product);
+            productRepository.delete(product);
+            return true;
     }
 
     @Override
@@ -165,7 +167,6 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductDto.class);
     }
-
     @Override
     public ProductDto decreaseUnits(Long productId, HttpServletRequest request, int units) {
         String email=emailExtractor.getEmailFromRequest(request);

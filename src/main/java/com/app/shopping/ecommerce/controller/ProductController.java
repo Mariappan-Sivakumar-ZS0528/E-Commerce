@@ -65,8 +65,13 @@ public class ProductController {
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasRole('ROLE_MERCHANT')")
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId, HttpServletRequest request){
-        productService.deleteProduct(productId, request);
-        return ResponseEntity.ok("Product deleted successfully");
+        boolean deleted = productService.deleteProduct(productId, request);
+        if (!deleted){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product cannot be deleted");
+        }
+        else {
+            return ResponseEntity.ok("Product deleted successfully");
+        }
     }
     @PutMapping("/increaseUnits/{productId}")
     @PreAuthorize("hasRole('ROLE_MERCHANT')")

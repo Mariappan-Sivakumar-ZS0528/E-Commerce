@@ -18,7 +18,7 @@ public interface ProductService {
     List<ProductDto> searchProduct(String query);
     List<ProductDto> searchProductInSupplier(Long id,String query);
     ProductDto updateProduct(Long productId,ProductDto productDto, HttpServletRequest request);
-    void deleteProduct(Long productId, HttpServletRequest request);
+    boolean deleteProduct(Long productId, HttpServletRequest request);
     ProductDto increaseUnits(Long productId, HttpServletRequest request,int units);
     ProductDto decreaseUnits(Long productId, HttpServletRequest request,int units);
     String uploadImage(Long productId, HttpServletRequest request, MultipartFile... images) throws IOException;

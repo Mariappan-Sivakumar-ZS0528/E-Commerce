@@ -57,13 +57,14 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
-    public void deleteSubCategory(long categoryId, Long subCategoryId) {
+    public String deleteSubCategory(long categoryId, Long subCategoryId) {
         Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","id",categoryId));
         SubCategory subCategory=subCategoryRepository.findById(subCategoryId).orElseThrow(()->new ResourceNotFoundException("SubCategory","id",subCategoryId));
         if (!category.getId().equals(subCategory.getCategory().getId())){
             throw new ECommerceApiException(HttpStatus.BAD_REQUEST,"SubCategory is not belong to this category");
         }
         subCategoryRepository.delete(subCategory);
+        return "SubCategory deleted successfully";
     }
 
     @Override

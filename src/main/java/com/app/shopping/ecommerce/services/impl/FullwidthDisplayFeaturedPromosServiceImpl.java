@@ -8,17 +8,13 @@ import com.app.shopping.ecommerce.services.FullwidthDisplayFeaturedPromosService
 import com.app.shopping.ecommerce.util.ImageDimensionExtractor;
 import com.app.shopping.ecommerce.util.ImageDimensions;
 import com.app.shopping.ecommerce.util.ImageUtils;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDisplayFeaturedPromosService {
     private FullwidthDisplayFeaturedPromosRepository fullwidthDisplayFeaturedPromosRepository;
@@ -39,20 +35,20 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
         return modelMapper.map(updatedFullwidthDisplayFeaturedPromos,FullwidthDisplayFeaturedPromosDto.class);
     }
     @Override
-    public byte[] downloadMobileImage(Long id) {
+    public Optional<byte[]> downloadMobileImage(Long id) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
         if(fullwidthDisplayFeaturedPromos!=null){
-            return ImageUtils.decompressImage(fullwidthDisplayFeaturedPromos.getMobileImage());
+            return Optional.of(ImageUtils.decompressImage(fullwidthDisplayFeaturedPromos.getMobileImage()));
         }
-        return null;
+        return Optional.empty();
     }
     @Override
-    public byte[] downloadDesktopImage(Long id) {
+    public Optional<byte[]> downloadDesktopImage(Long id) {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
         if(fullwidthDisplayFeaturedPromos!=null){
-            return ImageUtils.decompressImage(fullwidthDisplayFeaturedPromos.getDesktopImage());
+            return Optional.of(ImageUtils.decompressImage(fullwidthDisplayFeaturedPromos.getDesktopImage()));
         }
-        return null;
+        return Optional.empty();
     }
     @Override
     public String getMeasurement(Long id,String WhichImageMeasurements) {
@@ -103,25 +99,25 @@ public class FullwidthDisplayFeaturedPromosServiceImpl implements FullwidthDispl
         }
     }
     @Override
-    public FullwidthDisplayFeaturedPromosDto updateWholePromos(Long id, FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto) {
-        FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
-        if(fullwidthDisplayFeaturedPromos!=null){
-            fullwidthDisplayFeaturedPromos.setPromoTitle(fullwidthDisplayFeaturedPromosDto.getPromoTitle());
-            fullwidthDisplayFeaturedPromos.setStartingDate(fullwidthDisplayFeaturedPromosDto.getStartingDate());
-            fullwidthDisplayFeaturedPromos.setEndingDate(fullwidthDisplayFeaturedPromosDto.getEndingDate());
-            fullwidthDisplayFeaturedPromos.setLink(fullwidthDisplayFeaturedPromosDto.getLink());
-            fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos);
-            return modelMapper.map(fullwidthDisplayFeaturedPromos,FullwidthDisplayFeaturedPromosDto.class);
+    public Optional<FullwidthDisplayFeaturedPromosDto> updateWholePromos(Long id, FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto) {
+        Optional<FullwidthDisplayFeaturedPromos> fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id);
+        if(!fullwidthDisplayFeaturedPromos.isEmpty()){
+            fullwidthDisplayFeaturedPromos.get().setPromoTitle(fullwidthDisplayFeaturedPromosDto.getPromoTitle());
+            fullwidthDisplayFeaturedPromos.get().setStartingDate(fullwidthDisplayFeaturedPromosDto.getStartingDate());
+            fullwidthDisplayFeaturedPromos.get().setEndingDate(fullwidthDisplayFeaturedPromosDto.getEndingDate());
+            fullwidthDisplayFeaturedPromos.get().setLink(fullwidthDisplayFeaturedPromosDto.getLink());
+            fullwidthDisplayFeaturedPromosRepository.save(fullwidthDisplayFeaturedPromos.get());
+            return Optional.of(modelMapper.map(fullwidthDisplayFeaturedPromos.get(),FullwidthDisplayFeaturedPromosDto.class));
         }
         else {
-            return null;
+            return Optional.empty();
         }
     }
     @Override
     public String uploadImages(Long id,byte[] mobileImage, byte[] desktopImage) throws IOException {
         FullwidthDisplayFeaturedPromos fullwidthDisplayFeaturedPromos=fullwidthDisplayFeaturedPromosRepository.findById(id).orElse(null);
         if(fullwidthDisplayFeaturedPromos==null){
-            throw new RuntimeException("FullwidthDisplayFeaturedPromos not found");
+            return "No record found in the provided id";
         }
         else {
             fullwidthDisplayFeaturedPromos.setMobileImage(ImageUtils.compressImage(mobileImage));

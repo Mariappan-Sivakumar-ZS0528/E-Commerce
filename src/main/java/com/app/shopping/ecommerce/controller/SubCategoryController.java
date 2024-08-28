@@ -54,7 +54,6 @@ public class SubCategoryController {
     @ApiResponse(responseCode = "200", description = "Sub Category deleted successfully")
     @DeleteMapping("{categoryId}/sub-categories/{subCategoryId}")
     public ResponseEntity<String> deleteSubCategory(@PathVariable(value = "categoryId" ) Long categoryId,@PathVariable(value = "subCategoryId" ) Long subCategoryId){
-        subCategoryService.deleteSubCategory(categoryId,subCategoryId);
-        return new ResponseEntity<>("SubCategory deleted successfully",HttpStatus.OK);
+        return new ResponseEntity<>(subCategoryService.deleteSubCategory(categoryId,subCategoryId),HttpStatus.OK);
     }
 }

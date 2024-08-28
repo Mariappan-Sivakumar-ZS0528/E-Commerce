@@ -1,12 +1,10 @@
 package com.app.shopping.ecommerce.services;
 
 import com.app.shopping.ecommerce.payload.FullwidthDisplayFeaturedPromosDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface FullwidthDisplayFeaturedPromosService {
 
@@ -14,9 +12,9 @@ public interface FullwidthDisplayFeaturedPromosService {
     String uploadImages (Long id, byte[] mobileImage , byte[] desktopImage) throws IOException;
     FullwidthDisplayFeaturedPromosDto add(FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto);
 
-    byte[] downloadMobileImage(Long id);
+    Optional<byte[]> downloadMobileImage(Long id);
 
-    byte[] downloadDesktopImage(Long id);
+    Optional<byte[]> downloadDesktopImage(Long id);
 
     String getMeasurement(Long id,String WhichImageMeasurements);
 
@@ -26,5 +24,5 @@ public interface FullwidthDisplayFeaturedPromosService {
 
     String enablePromos(Long id);
 
-    FullwidthDisplayFeaturedPromosDto updateWholePromos(Long id, FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto);
+    Optional<FullwidthDisplayFeaturedPromosDto> updateWholePromos(Long id, FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto);
 }

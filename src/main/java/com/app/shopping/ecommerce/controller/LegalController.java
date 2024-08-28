@@ -35,7 +35,8 @@ public class LegalController {
     @GetMapping
     @Operation(summary = "Get all legal")
     public ResponseEntity<List<Legal>> getAllLegal() {
-        return ResponseEntity.ok(legalService.getAllLegal());}
+        return ResponseEntity.ok(legalService.getAllLegal());
+    }
     @Operation(summary = "Get legal by id")
     @GetMapping("/{id}")
     public ResponseEntity<LegalDto> getLegalById(@PathVariable Long id) {

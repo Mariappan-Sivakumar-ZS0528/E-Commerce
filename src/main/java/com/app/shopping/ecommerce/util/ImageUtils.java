@@ -19,13 +19,6 @@ public class ImageUtils
             int size = deflater.deflate(tmp);
             ouputStream.write(tmp, 0, size);
         }
-        try {
-            ouputStream.close();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
         return ouputStream.toByteArray();
     }
     public static byte[] decompressImage(byte[] data)

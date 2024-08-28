@@ -28,16 +28,11 @@ public class LegalServiceImpl implements LegalService {
 
 
     @Override
-    public LegalDto addlegal(LegalDto newLegal) {
-        Legal legal = modelMapper.map(newLegal, Legal.class);
-        return modelMapper.map(legalRepository.save(legal), LegalDto.class);
-    }
-
-    @Override
     public LegalDto addLegal(LegalDto newLegal) {
         Legal legal = modelMapper.map(newLegal, Legal.class);
         return modelMapper.map(legalRepository.save(legal), LegalDto.class);
     }
+
 
     @Override
     public LegalDto getLegalById(Long id) {
@@ -47,7 +42,7 @@ public class LegalServiceImpl implements LegalService {
 
     @Override
     public List<Legal> getAllLegal() {
-        return legalRepository.findAll().stream().map(legal-> modelMapper.map(legal, Legal.class)).toList();
+        return legalRepository.findAll().stream().toList();
     }
 
     @Override
@@ -69,6 +64,8 @@ public class LegalServiceImpl implements LegalService {
             legalRepository.deleteById(id);
             return true;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 }

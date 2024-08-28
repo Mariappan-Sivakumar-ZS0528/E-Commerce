@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/FullWidthDisplay")
@@ -46,7 +47,7 @@ public class FullwidthDisplayFeaturedPromosController {
     }
     @Operation(summary = "Download Mobile Image for specific id")
     @GetMapping("/downloadMobileImage/{id}")
-    public ResponseEntity<byte[]> downloadMobileImage(@PathVariable Long id){
+    public ResponseEntity<Optional<byte[]>> downloadMobileImage(@PathVariable Long id){
         return new ResponseEntity<>(fullwidthDisplayFeaturedPromosService.downloadMobileImage(id),HttpStatus.OK);
     }
     @Operation(summary = "Get measurement for specific id and also by WhichImageMeasurements")
@@ -63,7 +64,7 @@ public class FullwidthDisplayFeaturedPromosController {
     }
     @Operation(summary = "Download Desktop Image for specific id")
     @GetMapping("/downloadDesktopImage/{id}")
-    public ResponseEntity<byte[]> downloadDesktopImage(@PathVariable Long id){
+    public ResponseEntity<Optional<byte[]>> downloadDesktopImage(@PathVariable Long id){
         return new ResponseEntity<>(fullwidthDisplayFeaturedPromosService.downloadDesktopImage(id),HttpStatus.OK);
     }
     @Operation (summary = "Disable FullWidthDisplayPromos by id")
@@ -84,7 +85,7 @@ public class FullwidthDisplayFeaturedPromosController {
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/updateWholePromos/{id}")
-    public ResponseEntity<FullwidthDisplayFeaturedPromosDto> updateWholePromos(@PathVariable Long id,@RequestBody FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto){
+    public ResponseEntity<Optional<FullwidthDisplayFeaturedPromosDto>> updateWholePromos(@PathVariable Long id, @RequestBody FullwidthDisplayFeaturedPromosDto fullwidthDisplayFeaturedPromosDto){
         return new ResponseEntity<>(fullwidthDisplayFeaturedPromosService.updateWholePromos(id,fullwidthDisplayFeaturedPromosDto),HttpStatus.OK);
     }
 }
