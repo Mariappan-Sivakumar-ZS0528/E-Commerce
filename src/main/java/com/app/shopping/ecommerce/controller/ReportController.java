@@ -2,6 +2,7 @@ package com.app.shopping.ecommerce.controller;
 
 import com.app.shopping.ecommerce.payload.ReportDto;
 import com.app.shopping.ecommerce.services.ReportService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +43,15 @@ public class ReportController
     public ResponseEntity<String> deleteReport(@PathVariable Long id, @PathVariable Long reportDetailId)
     {
         return ResponseEntity.status(HttpStatus.OK).body(reportService.deleteReport(reportDetailId,id));
+    }
+
+    @GetMapping("/download")
+    public void downloadReport(HttpServletResponse response) {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=report.xls";
+        response.setHeader(headerKey, headerValue);
+        reportService.downloadReport(response);
+
     }
 }

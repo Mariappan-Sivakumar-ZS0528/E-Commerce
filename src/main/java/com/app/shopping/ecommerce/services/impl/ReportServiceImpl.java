@@ -6,6 +6,11 @@ import com.app.shopping.ecommerce.payload.ReportDto;
 import com.app.shopping.ecommerce.repository.ReportTitleRepository;
 import com.app.shopping.ecommerce.repository.ReportDetailsRepository;
 import com.app.shopping.ecommerce.services.ReportService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +25,7 @@ public class ReportServiceImpl implements ReportService
     private ReportDetailsRepository reportDetailsRepository;
     private ModelMapper modelMapper;
     Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
+
     public ReportServiceImpl(ReportTitleRepository reportTitleRepository, ReportDetailsRepository reportDetailsRepository, ModelMapper modelMapper) {
         this.reportTitleRepository = reportTitleRepository;
         this.reportDetailsRepository = reportDetailsRepository;
@@ -70,5 +76,43 @@ public class ReportServiceImpl implements ReportService
             return null;
         reportDetailsRepository.delete(reportDetails);
         return "Report deleted successfully";
+    }
+
+    @Override
+    public String downloadReport(HttpServletResponse response) {
+        List<ReportDetails> reportDetails=reportDetailsRepository.findAll();
+        Workbook workbook= new HSSFWorkbook();
+        Sheet sheet=workbook.createSheet("Report");
+        Row row=sheet.createRow(0);
+        row.createCell(0).setCellValue("Name");
+        row.createCell(1).setCellValue("Column1");
+        row.createCell(2).setCellValue("Column2");
+        row.createCell(3).setCellValue("Column3");
+        row.createCell(4).setCellValue("Column4");
+        row.createCell(5).setCellValue("Column5");
+        row.createCell(6).setCellValue("Column6");
+        int rownum=1;
+        for(ReportDetails reportDetail:reportDetails)
+        {
+            Row row1=sheet.createRow(rownum);
+            row1.createCell(0).setCellValue(reportDetail.getName());
+            row1.createCell(1).setCellValue(reportDetail.getColumn1());
+            row1.createCell(2).setCellValue(reportDetail.getColumn2());
+            row1.createCell(3).setCellValue(reportDetail.getColumn3());
+            row1.createCell(4).setCellValue(reportDetail.getColumn4());
+            row1.createCell(5).setCellValue(reportDetail.getColumn5());
+            row1.createCell(6).setCellValue(reportDetail.getColumn6());
+            rownum++;
+        }
+        try
+        {
+            workbook.write(response.getOutputStream());
+            workbook.close();
+        }
+        catch (Exception e)
+        {
+            return "Error while downloading report{}" + e.getMessage();
+        }
+        return "Report downloaded successfully";
     }
 }

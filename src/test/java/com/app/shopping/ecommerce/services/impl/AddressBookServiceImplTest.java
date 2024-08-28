@@ -2,10 +2,12 @@ package com.app.shopping.ecommerce.services.impl;
 
 import com.app.shopping.ecommerce.entity.AddressBook;
 import com.app.shopping.ecommerce.entity.Customer;
+import com.app.shopping.ecommerce.exception.ECommerceApiException;
 import com.app.shopping.ecommerce.payload.AddressBookDto;
 import com.app.shopping.ecommerce.repository.AddressBookRepository;
 import com.app.shopping.ecommerce.repository.CustomerRepository;
 import com.app.shopping.ecommerce.services.AddressBookService;
+import com.app.shopping.ecommerce.util.EmailExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,13 +32,16 @@ class AddressBookServiceImplTest {
     private AddressBookRepository addressBookRepository;
     @MockBean
     private CustomerRepository customerRepository;
+    @MockBean
+    private EmailExtractor emailExtractor;
 //    @MockBean
 //    private ModelMapper modelMapper;
-
+    AddressBook addressBook;
+    Customer customer;
     MockHttpServletRequest request = new MockHttpServletRequest();
     @BeforeEach
     public void setUp() {
-        AddressBook addressBook = new AddressBook();
+        addressBook = new AddressBook();
         addressBook.setId(1L);
         addressBook.setAddressLine1("123 Main St");
         addressBook.setAddressLine2("");
@@ -43,7 +49,7 @@ class AddressBookServiceImplTest {
         addressBook.setPostalCode("628001");
         addressBook.setNickName("My Home");
         addressBook.setLabel("Home");
-        Customer customer = new Customer();
+        customer = new Customer();
         customer.setId(1L);
         customer.setEmail("spotmari@gmail.com");
         customer.setName("Mariappan Sivakumar");
@@ -51,11 +57,12 @@ class AddressBookServiceImplTest {
         addressBook.setCustomer(customer);
         Optional<AddressBook> optionalAddressBook = Optional.of(addressBook);
         List<AddressBook> listAddressBook = List.of(addressBook);
-        Mockito.when(addressBookRepository.findByCustomerEmail("spotmari@gmail.com")).thenReturn(listAddressBook);
+        Mockito.when(addressBookRepository.findByCustomerEmail("mari@gmail.com")).thenReturn(listAddressBook);
         Mockito.when(addressBookRepository.findById(1L)).thenReturn(optionalAddressBook);
         Mockito.when(addressBookRepository.save(Mockito.any(AddressBook.class))).thenReturn(addressBook);
-        Mockito.when(customerRepository.findByEmail("spotmari@gmail.com")).thenReturn(Optional.of(customer));
-        request.addHeader("Authorization", "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzcG90bWFyaUBnbWFpbC5jb20iLCJpYXQiOjE2OTkzNTk1ODksImV4cCI6MTY5OTk2NDM4OX0.rVQeSIQpNmFWFqSOPkN4ZkvGJG3aRrcpyA9TFbx0nIHRl069fT7W54PUUQDeJqir");
+        Mockito.when(customerRepository.findByEmail("mari@gmail.com")).thenReturn(Optional.of(customer));
+        Mockito.when(emailExtractor.getEmailFromRequest(Mockito.any(HttpServletRequest.class))).thenReturn("mari@gmail.com");
+//        request.addHeader("Authorization", "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJpQGdtYWlsLmNvbSIsImlhdCI6MTcyMTA0NDIyMiwiZXhwIjoxNzIxNjQ5MDIyfQ.9ypNowsrebM_Q7felB8A8CM2dwCi1icJig-Vyki30FC86x1pbzfHxRMXv6L3UiuJ");
     }
     @Test
     public void testFindById() {
@@ -103,5 +110,35 @@ class AddressBookServiceImplTest {
     @Test
     public void testSetDefault() {
         assertEquals("Address Set as Default", addressBookService.setDefault(1L, request));
+    }
+    @Test
+    public void testAddressBookByIdFailure(){
+        Mockito.when(customerRepository.findByEmail("mari@gmail.com")).thenReturn(Optional.of(new Customer()));
+        assertThrows(ECommerceApiException.class, () -> addressBookService.getAddressBookById(1L, request));
+    }
+    @Test
+    public void updateAddressBookFailure(){
+        Mockito.when(customerRepository.findByEmail("mari@gmail.com")).thenReturn(Optional.of(new Customer()));
+        assertThrows(ECommerceApiException.class, () -> addressBookService.updateAddressBook(1L, new AddressBookDto(), request));
+    }
+
+    @Test
+    public void deleteAddressBookFailure(){
+        Mockito.when(customerRepository.findByEmail("mari@gmail.com")).thenReturn(Optional.of(new Customer()));
+        assertThrows(ECommerceApiException.class, () -> addressBookService.deleteAddressBook(1L, request));
+    }
+
+    @Test
+    public void setDefaultFailure(){
+        Mockito.when(customerRepository.findByEmail("mari@gmail.com")).thenReturn(Optional.of(new Customer()));
+        assertThrows(ECommerceApiException.class, () -> addressBookService.setDefault(1L, request));
+    }
+
+    @Test
+    public void createAddressBookNew(){
+        Customer customer1=new Customer();
+        customer1.setAddressBooks(new HashSet<>());
+        Mockito.when(customerRepository.findByEmail("mari@gmail.com")).thenReturn(Optional.of(customer1));
+        assertEquals("123 Main St", addressBookService.createAddressBook(new AddressBookDto(), request).getAddressLine1());
     }
 }

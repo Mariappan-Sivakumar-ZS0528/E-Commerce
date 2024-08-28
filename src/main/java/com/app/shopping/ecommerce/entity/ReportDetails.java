@@ -23,4 +23,10 @@ public class ReportDetails
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_title_id")
     private ReportTitle reportTitle;
+    private String column1;
+    private String column2;
+    private String column3;
+    private String column4;
+    private String column5;
+    private String column6;
 }
