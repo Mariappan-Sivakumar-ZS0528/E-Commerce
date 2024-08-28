@@ -29,7 +29,6 @@ public class ReportDetails
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_title_id")
     private ReportTitle reportTitle;
-
     public ReportDetails(long l, String name, ReportTitle reportTitle) {
         this.id = l;
         this.name = name;

@@ -8,6 +8,10 @@ import com.app.shopping.ecommerce.repository.ReportTitleRepository;
 import com.app.shopping.ecommerce.services.ReportService;
 import com.app.shopping.ecommerce.services.impl.ReportServiceImpl;
 import jakarta.validation.executable.ValidateOnExecution;
+import com.app.shopping.ecommerce.repository.ReportDetailsRepository;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +32,20 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.springframework.mock.web.MockHttpServletResponse;
 
-@ExtendWith(SpringExtension.class)
-public class ReportServiceImplTest {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
+@ExtendWith(MockitoExtension.class)
+class ReportServiceImplTest {
     @InjectMocks
     private ReportServiceImpl reportService;
     @Mock
@@ -43,6 +58,7 @@ public class ReportServiceImplTest {
     ReportDto reportDto;
     ReportTitle reportTitle;
     ReportDetails reportDetails;
+    HttpServletResponse response=new MockHttpServletResponse();
 
 
     @BeforeEach
@@ -143,5 +159,19 @@ public class ReportServiceImplTest {
     public void testDeleteReportEmpty() {
         String reportDeleted = reportService.deleteReport(1L, 2L);
         assertEquals(null, reportDeleted);
+    }
+
+
+    @Test
+    void downloadReport() {
+        assertEquals("Report downloaded successfully", reportService.downloadReport(response));
+    }
+
+    @Test
+    void downloadReport_Throws() throws IOException {
+        response=mock(HttpServletResponse.class);
+        Mockito.when(response.getOutputStream()).thenThrow(IOException.class);
+        String result = reportService.downloadReport(response);
+        assertTrue(result.contains("Error while downloading report"));
     }
 }

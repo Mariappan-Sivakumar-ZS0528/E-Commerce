@@ -46,7 +46,7 @@ public class AddressBookServiceImpl implements AddressBookService {
         addressBook.setNickName(addressBookDto.getNickName());
         addressBook.setCustomer(customer);
         addressBook.setLabel(addressBookDto.getLabel());
-        if (customer.getAddressBooks().size() == 0) {
+        if (customer.getAddressBooks().isEmpty()) {
             addressBook.setDefault(true);
         }
         AddressBook addressBook1=addressBookRepository.save(addressBook);
