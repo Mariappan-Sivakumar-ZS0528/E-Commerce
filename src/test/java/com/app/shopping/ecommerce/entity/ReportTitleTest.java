@@ -75,7 +75,7 @@ class ReportTitleTest {
     @Test
     void testToString() {
         ReportTitle reportTitle1 = new ReportTitle(1L, "Report Title", Set.of(new ReportDetails()));
-        assertEquals("ReportTitle(id=1, title=Report Title, reportDetails=[ReportDetails(id=null, name=null, reportTitle=null)])", reportTitle1.toString());
+        assertEquals("ReportTitle(id=1, title=Report Title, reportDetails=[ReportDetails(id=null, name=null, Column1=null, Column2=null, Column3=null, Column4=null, Column5=null, Column6=null, reportTitle=null)])", reportTitle1.toString());
     }
 
     @Test

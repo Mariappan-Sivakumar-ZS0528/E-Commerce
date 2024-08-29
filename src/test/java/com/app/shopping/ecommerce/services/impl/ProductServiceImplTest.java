@@ -53,12 +53,13 @@ class ProductServiceImplTest {
     @Mock
     private ModelMapper modelMapper;
     @Mock
+    private Product product;
+    @Mock
     private SupplierRepository supplierRepository;
     @Mock
     private EmailExtractor emailExtractor;
     @InjectMocks
     private ProductServiceImpl productService;
-     Product product;
      ProductDto productdto;
      Supplier supplier;
      Category category;
@@ -73,9 +74,11 @@ class ProductServiceImplTest {
         product=new Product();
         product.setId(1L);
         product.setName("Cow Milk");
+        product.setActive(true);
         product.setPrice(100);
         product.setInventory(10);
         product.setQuantity(5);
+        product.setStartingDate(new Date());
         product.setDescription("Product Description");
         productdto.setId(1L);
         productdto.setName("Cow Milk");
@@ -431,10 +434,17 @@ class ProductServiceImplTest {
         ProductOfferDto productOfferDto = new ProductOfferDto();
         productOfferDto.setDiscount(10);
         productOfferDto.setOfferDurationType("limited");
-        Date startingDate = new SimpleDateFormat("yyyy-MM-dd").parse("2024-07-25");
-        Date endingDate = new SimpleDateFormat("yyyy-MM-dd").parse("2024-07-26");
-        productOfferDto.setStartingDate(startingDate);
-        productOfferDto.setEndingDate(endingDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 2);
+        Date twoDaysBefore = calendar.getTime();
+
+        productOfferDto.setStartingDate(twoDaysBefore);
+        calendar = Calendar.getInstance();
+
+        // Two days after today
+        calendar.add(Calendar.DAY_OF_MONTH, 4);
+        Date twoDaysAfter = calendar.getTime();
+        productOfferDto.setEndingDate(twoDaysAfter);
         when(modelMapper.map(product,ProductOfferDto.class)).thenReturn(productOfferDto);
         assertEquals(productOfferDto,productService.createProductOffer(1L,productOfferDto,request));
     }
@@ -495,8 +505,17 @@ class ProductServiceImplTest {
     @Test
     void getProductOfferByIdForSuccess() throws ParseException {
         ProductOfferDto productOfferDto = new ProductOfferDto();
-        product.setStartingDate(new SimpleDateFormat("yyyy-MM-dd").parse("2024-07-20"));
-        product.setEndingDate(new SimpleDateFormat("yyyy-MM-dd").parse("2024-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        // Two days before today
+        calendar.add(Calendar.DAY_OF_MONTH, -2);
+        Date twoDaysBefore = calendar.getTime();
+        product.setStartingDate(twoDaysBefore);
+        calendar = Calendar.getInstance();
+
+        // Two days after today
+        calendar.add(Calendar.DAY_OF_MONTH, 2);
+        Date twoDaysAfter = calendar.getTime();
+        product.setEndingDate(twoDaysAfter);
         when(modelMapper.map(product,ProductOfferDto.class)).thenReturn(productOfferDto);
         assertEquals(productOfferDto,productService.getProductOfferById(1L));
     }

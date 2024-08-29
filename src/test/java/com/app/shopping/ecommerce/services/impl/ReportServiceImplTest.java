@@ -44,7 +44,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class ReportServiceImplTest {
     @InjectMocks
     private ReportServiceImpl reportService;
@@ -74,8 +74,8 @@ class ReportServiceImplTest {
         reportDetails.setReportTitle(reportTitle);
         reportDetails.setName("Report Details");
         List<ReportDetails> reportDetailsList = List.of(reportDetails);
-        when(reportDetailsRepository.findAll()).thenReturn(reportDetailsList);
-        when(reportDetailsRepository.save(Mockito.any(ReportDetails.class))).thenReturn(reportDetails);
+//        when(reportDetailsRepository.findAll()).thenReturn(reportDetailsList);
+//        when(reportDetailsRepository.save(Mockito.any(ReportDetails.class))).thenReturn(reportDetails);
         List<ReportTitle> reportTitles = List.of(reportTitle);
         when(reportTitleRepository.findById(1L)).thenReturn(Optional.of(reportTitle));
         when(reportTitleRepository.findAll()).thenReturn(reportTitles);
@@ -139,6 +139,7 @@ class ReportServiceImplTest {
 //        reportDto.setId(1L);
 //        reportDto.setName("Report Details");
         when(reportDetailsRepository.findById(1L)).thenReturn(Optional.of(reportDetails));
+        when(reportDetailsRepository.save(reportDetails)).thenReturn(reportDetails);
         when(modelMapper.map(reportDetails, ReportDto.class)).thenReturn(reportDto);
         assertEquals(reportDto, reportService.updateReportDetails(1L, 1L, reportDto));
     }
